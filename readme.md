@@ -1,27 +1,70 @@
-# Laravel PHP Framework
+辞書まとめwiki
+==============
+wiki形式の辞書アップローダーです。
+保存は[主に単語で答えるゲームにおける汎用的な辞書形式]で行い、次のゲーム用の辞書を出力します。
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+* [キャッチフィーリング]、[Drawing Catch] \(*.cfq)
+* [きゃっちま] \(*.dat)
+* [Inteligenceω] \(*.txt, *.zip)
+* [ピクトセンス]
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+[主に単語で答えるゲームにおける汎用的な辞書形式]: https://github.com/esperecyan/dictionary/blob/master/dictionary.md
+[キャッチフィーリング]: http://www.forest.impress.co.jp/library/software/catchfeeling/
+[Drawing Catch]: http://drafly.nazo.cc/games/olds/DC
+[きゃっちま]: http://vodka-catchm.seesaa.net/article/115922159.html
+[ピクトセンス]: http://pictsense.com/
+[Inteligenceω]: http://loxee.web.fc2.com/inteli.html
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+wikiの作成
+----------
+1. 本PHPプロジェクトを作成する一つ上のディレクトリに移動します。  
+   例: `cd /var/www`
+1. プロジェクトを作成します。  
+   * 開発用: `composer create-project --keep-vcs esperecyan/dictionary-wiki`
+   * 実運用: `composer create-project --no-dev --keep-vcs esperecyan/dictionary-wiki`
+1. プロジェクトルートに移動します。
+   `cd dictionary-wiki`
+1. 「storage」以下と「bootstrap/cache」以下にApacheから書き込めるようにします。  
+   `chmod --recursive g+w {storage,bootstrap/cache}`  
+   `sudo chgrp --recursive apache {storage,bootstrap/cache}`
+1. 「.env」ファイルに、データベース設定、OAuthログイン用のクライアントIDとクライアントシークレットを記述します。
+   実運用環境であれば、`APP_ENV=production` `APP_DEBUG=false` も設定しておき、
+   キャッシュの作成に利用する `APP_URL` にwikiトップページのURLを末尾のスラッシュを抜いて記述します。
+1. マイグレーションを実行します。
+   `php artisan migrate --force`  
+1. 【実運用環境のみ】キャッシュを生成します。  
+   `composer dump-autoload --optimize`  
+   `php artisan config:cache`  
+   `php artisan route:cache`
+1. 「.apache.conf」ファイルを、wikiを設置する `<VirstualHost>` セクション内で `Include` します。
+1. Apacheを再起動します。  
+   `sudo apachectl graceful`
 
-## Official Documentation
+要件
+----
+* Apache (2.4 以上) モジュール版 PHP 7.1 以上
+* php-mbstring ([mbstring拡張モジュール])
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+[mbstring拡張モジュール]: https://secure.php.net/mbstring "mbstring はマルチバイト対応の文字列関数を提供し、PHP でマルチバイトエンコーディングを処理することを容易にします。"
 
-## Contributing
+### 依存するライブラリ由来の要件
+* PHP 64bit — [nelexa/zip] — [esperecyan/dictionary-php]
+* php-intl ([Intl拡張モジュール]) — [esperecyan/dictionary-php]
+* php-pecl-zip ([Zip拡張モジュール]) — [esperecyan/dictionary-php]
+* php-pecl-imagick ([imagick (PECL拡張モジュール)]) — [esperecyan/dictionary-php]
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+[nelexa/zip]: https://packagist.org/packages/nelexa/zip
+[esperecyan/dictionary-php]: https://packagist.org/packages/esperecyan/dictionary-php
+[Intl拡張モジュール]: https://secure.php.net/intl "国際化用拡張モジュール (Intl と略します) は ICU ライブラリのラッパーです。 PHP プログラマが、UCA 準拠の照合順序 (collation) や日付/時刻/数値/通貨のフォーマットを扱えるようにします。"
+[Zip拡張モジュール]: https://secure.php.net/zip "この拡張モジュールにより、ZIP 圧縮されたアーカイブとその内部のファイルに対する透過的な読み書きが可能となります。"
+[imagick (PECL拡張モジュール)]: https://secure.php.net/imagick "Imagick は、ImageMagick API を使用して画像の作成や修正を行う ネイティブ PHP 拡張モジュールです。"
 
-## Security Vulnerabilities
+Contribution
+------------
+Pull Request、または Issue よりお願いいたします。
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+ライセンス
+----------
+当スクリプトのライセンスは [Mozilla Public License Version 2.0] \(MPL-2.0) です。
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+[Mozilla Public License Version 2.0]: https://www.mozilla.org/MPL/2.0/

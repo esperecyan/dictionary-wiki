@@ -1,19 +1,46 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "name": "esperecyan/dictionary-wiki",
+    "description": "辞書まとめwiki https://game.pokemori.jp/dictionary-wiki/",
+    "license": "MPL-2.0",
     "type": "project",
+    "homepage": "https://game.pokemori.jp/dictionary-wiki/",
+    "authors": [
+        {
+            "name": "100の人",
+            "homepage": "https://twitter.com/esperecyan",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/esperecyan/dictionary-wiki/issues"
+    },
     "require": {
-        "php": ">=5.5.9",
-        "laravel/framework": "5.2.*"
+        "php": ">=7.1",
+        "ext-gettext": "*",
+        "ext-mbstring": "*",
+        "laravel/framework": "5.2.*",
+        "laravel/socialite": "^2.0.20",
+        "laravelcollective/html": "^5.2.4",
+        "esperecyan/dictionary-php": "^0.7.8",
+        "esperecyan/html-filter": "^1.1.1",
+        "logue/igo-php": "@dev",
+        "graham-campbell/markdown": "^7.0.0",
+        "league/html-to-markdown": "^4.3.1",
+        "masterminds/html5": "^2.2.2",
+        "bantu/ini-get-wrapper": "^1.0.1",
+        "scriptfusion/byte-formatter": "^3.2.0",
+        "james-heinrich/getid3": "^1.9.13",
+        "paulfitz/daff-php": "^1.3.16",
+        "ccampbell/chromephp": "^4.1.0",
+        "barryvdh/laravel-debugbar": "^2.3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~4.0",
+        "phpunit/phpunit": "^5.7.4",
         "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*"
+        "symfony/dom-crawler": "2.8.*|3.0.*",
+        "barryvdh/laravel-ide-helper": "^2.2.2"
     },
     "autoload": {
         "classmap": [
@@ -21,7 +48,11 @@
         ],
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "files": [
+            "app/Helpers/helpers.php",
+            "app/Helpers/registers.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [
@@ -30,20 +61,24 @@
     },
     "scripts": {
         "post-root-package-install": [
-            "php -r \"copy('.env.example', '.env');\""
+            "php -r \"copy('.env.example', '.env');\"",
+            "php -r \"file_put_contents('.apache.conf', str_replace('{PROJECT_DIR}', __DIR__, file_get_contents('.apache.conf.example'))); \"",
+            "php -r \"copy('favicon.ico', 'public/favicon.ico');\""
         ],
         "post-create-project-cmd": [
             "php artisan key:generate"
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
-            "php artisan optimize"
+            "php artisan optimize",
+            "php artisan view:clear"
         ],
         "pre-update-cmd": [
             "php artisan clear-compiled"
         ],
         "post-update-cmd": [
-            "php artisan optimize"
+            "php artisan optimize",
+            "php artisan ide-helper:generate"
         ]
     },
     "config": {

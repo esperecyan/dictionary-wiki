@@ -1,0 +1,15 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+
+/* Handsontableにおいて改行があると高さが正常に設定されない問題の修正 */
+/*.wtHider {
+	height: auto !important;
+}*/
+
+.control-label.col-md-12 {
+	text-align: left;
+}
+
+textarea[name="csv"] {
+	height: 30em;
+}
+

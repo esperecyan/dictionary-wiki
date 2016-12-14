@@ -1,0 +1,17 @@
+# Apache configuration file (see <https://httpd.apache.org/docs/current/mod/quickreference.html>)
+
+<Directory "{PROJECT_DIR}/public">
+	AllowOverride all
+</Directory>
+
+# Instead of FilesController::show
+AliasMatch ^/dictionary-wiki/dictionaries/([1-9][0-9]*)/files/(.+) "{PROJECT_DIR}/storage/app/files/$1/$2"
+<Directory "{PROJECT_DIR}/storage/app/files">
+	Require all granted
+	RewriteEngine on
+	RewriteBase /dictionary-wiki/dictionaries
+    RewriteCond %{REQUEST_FILENAME}.m4a -f
+    RewriteRule ^(.+)/(.+)$ $1/files/$2.m4a [L]
+</Directory>
+
+Alias /dictionary-wiki "{PROJECT_DIR}/public"

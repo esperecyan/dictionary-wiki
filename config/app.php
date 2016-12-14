@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array_merge_recursive([
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'url' => 'http://localhost',
+    'url' => env('APP_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tokyo',
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ja',
 
     /*
     |--------------------------------------------------------------------------
@@ -155,6 +155,13 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\MacroServiceProvider::class,
+
+        Laravel\Socialite\SocialiteServiceProvider::class,
+        //Collective\Html\HtmlServiceProvider::class,
+        App\Providers\HtmlServiceProvider::class,
+        GrahamCampbell\Markdown\MarkdownServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -201,7 +208,21 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Form'      => Collective\Html\FormFacade::class,
+        'Html'      => Collective\Html\HtmlFacade::class,
+        'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
+        'Debugbar'  => Barryvdh\Debugbar\Facade::class,
 
     ],
 
-];
+], array_map(function (array $fqcns): array {
+    return array_filter($fqcns, 'class_exists');
+}, [
+    'providers' => [
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+    ],
+    'aliases' => [
+    ],
+]));

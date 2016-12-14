@@ -14,7 +14,21 @@ return [
     */
 
     'files' => [
-        //
+        base_path('app/User.php'),
+        base_path('app/ExternalAccount.php'),
+        base_path('app/Dictionary.php'),
+        base_path('app/File.php'),
+        base_path('app/Tag.php'),
+        base_path('app/Revision.php'),
+        base_path('app/Http/Controllers/Controller.php'),
+        base_path('app/Http/Controllers/UsersController.php'),
+        base_path('app/Http/Controllers/DictionariesController.php'),
+        base_path('app/Http/Controllers/RevisionsController.php'),
+        base_path('app/Http/Middleware/HTTPStatus.php'),
+        base_path('app/Http/Middleware/Polyfill.php'),
+        base_path('app/Providers/AppServiceProvider.php'),
+        base_path('app/Providers/HtmlServiceProvider.php'),
+        base_path('app/Providers/MacroServiceProvider.php'),
     ],
 
     /*

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Validator::extend('markdown', 'App\\Validators\\MarkdownValidator@validate');
+        Validator::extend('dictionary_file', 'App\\Validators\\DictionaryFileValidator@validate');
+        Validator::extend('dictionary', 'App\\Validators\\DictionaryValidator@validate');
     }
 
     /**

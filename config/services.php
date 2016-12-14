@@ -35,4 +35,43 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | OAuthサービスの認証情報
+    |--------------------------------------------------------------------------
+    |
+    | Laravel Socialite から使用される認証情報です。
+    | 実際のクライアントIDとクライアントシークレットは「.env」で指定します。
+    |
+    */
+    
+    'github' => [
+        'client_id'     => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect'      => php_sapi_name() === 'cli' ? config('app.url') . '/auth/callback' : url('auth/callback'),
+    ],
+    
+    'facebook' => [
+        'client_id'     => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect'      => php_sapi_name() === 'cli' ? config('app.url') . '/auth/callback' : url('auth/callback'),
+    ],
+    
+    'google' => [
+        'client_id'     => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect'      => php_sapi_name() === 'cli' ? config('app.url') . '/auth/callback' : url('auth/callback'),
+    ],
+    
+    'linkedin' => [
+        'client_id'     => env('LINKEDIN_CLIENT_ID'),
+        'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+        'redirect'      => php_sapi_name() === 'cli' ? config('app.url') . '/auth/callback' : url('auth/callback'),
+    ],
+    
+    'twitter' => [
+        'client_id'     => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect'      => php_sapi_name() === 'cli' ? config('app.url') . '/auth/callback' : url('auth/callback'),
+    ],
 ];
