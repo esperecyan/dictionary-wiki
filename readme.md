@@ -28,17 +28,18 @@ wikiの作成
    `chmod --recursive g+w {storage,bootstrap/cache}`  
    `sudo chgrp --recursive apache {storage,bootstrap/cache}`
 1. 「.env」ファイルに、データベース設定、OAuthログイン用のクライアントIDとクライアントシークレットを記述します。
-   実運用環境であれば、`APP_ENV=production` `APP_DEBUG=false` `APP_LOG_LEVEL=notice` も設定しておき、
-   キャッシュの作成に利用する `APP_URL` にwikiトップページのURLを末尾のスラッシュを抜いて記述します。
-1. マイグレーションを実行します。
-   `php artisan migrate --force`  
-1. 【実運用環境のみ】キャッシュを生成します。  
-   `composer dump-autoload --optimize`  
-   `php artisan config:cache`  
-   `php artisan route:cache`
+   実運用環境であれば、キャッシュの作成に利用する `APP_URL` にwikiトップページのURLを末尾のスラッシュを抜いて記述します。
+1. キャッシュを生成し (実運用環境)、マイグレーションを実行します。  
+   * 開発用: `composer run-script --dev post-install-cmd`
+   * 実運用: `composer run-script --no-dev post-install-cmd`
 1. 「.apache.conf」ファイルを、wikiを設置する `<VirstualHost>` セクション内で `Include` します。
 1. Apacheを再起動します。  
    `sudo apachectl graceful`
+
+### 更新 (実運用環境)
+`git fetch`  
+`git checkout $(git describe remotes/origin/master --tags)`  
+`composer install --no-dev`
 
 要件
 ----

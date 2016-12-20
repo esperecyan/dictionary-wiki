@@ -61,7 +61,7 @@
     },
     "scripts": {
         "post-root-package-install": [
-            "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "App\\Console\\ComposerScripts::postRootPackageInstall",
             "php -r \"file_exists('.apache.conf') || file_put_contents('.apache.conf', str_replace('{PROJECT_DIR}', __DIR__, file_get_contents('.apache.conf.example'))); \"",
             "php -r \"file_exists('public/favicon.ico') || copy('favicon.ico', 'public/favicon.ico');\""
         ],
@@ -69,7 +69,8 @@
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "composer dump-autoload --optimize",
+            "App\\Console\\ComposerScripts::postInstall",
             "php artisan optimize",
             "php artisan view:clear"
         ],
