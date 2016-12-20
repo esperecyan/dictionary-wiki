@@ -2,17 +2,17 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 use App\{Dictionary, Revision, File};
 use App\Http\Controllers\DictionariesController;
 use Route;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Contracts\Validation\Validator;
 
 /**
  * 辞書の作成・修正のリクエスト。
  */
-class ModifyDictionaryRequest extends Request
+class ModifyDictionaryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -74,6 +74,18 @@ class ModifyDictionaryRequest extends Request
         }
         
         return $this->requireRules($rules, $requiredRuleKeys);
+    }
+    
+    /**
+     * 指定したキーのバリデーションルールに、必須であること (required) を追加します。
+     *
+     * @prama (string|string[])[] $rules
+     * @param string[] $keys
+     * @return string[][]
+     */
+    public function requireRules(array $rules, array $keys): array
+    {
+        return array_merge_recursive($rules, array_fill_keys($keys, 'required'));
     }
     
     /**

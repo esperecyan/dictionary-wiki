@@ -6,63 +6,38 @@ use App\{User, ExternalAccount};
 use Auth;
 use Validator;
 use Socialite;
+use Illuminate\Foundation\Auth\{RegistersUsers, AuthenticatesUsers};
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\{Request, RedirectResponse};
-use Symfony\Component\HttpFoundation\{Response as BaseResponse, RedirectResponse as BaseRedirectResponse};
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Laravel\Socialite\Two\InvalidStateException;
 use GuzzleHttp\Exception\ClientException;
 use InvalidArgumentException;
 
-class AuthController extends Controller
+class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Registration & Login Controller
+    | Register Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use RegistersUsers, AuthenticatesUsers {
+        RegistersUsers::guard insteadof AuthenticatesUsers;
+        RegistersUsers::redirectPath insteadof AuthenticatesUsers;
+    }
 
     /**
      * Where to redirect users after login / registration.
      *
      * @var string
      */
-    protected $redirectTo = '/';
-
-    /**
-     * Validate the user login request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    protected function validateLogin(Request $request): void
-    {
-        $this->validate($request, [
-            'provider' => ['required', 'in:' . implode(',', config('auth.services'))],
-        ]);
-    }
-
-    /**
-     * Handle a login request to the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function login(Request $request): BaseRedirectResponse
-    {
-        $this->validateLogin($request);
-        $request->session()->flash('provider', $request->input('provider'));
-        $request->session()->flash('remember', $request->has('remember'));
-        return Socialite::driver(session('provider'))->redirect();
-    }
+    protected $redirectTo = '/home';
 
     /**
      * ユーザーの情報をOAuthサービスから取得し、情報をもとにログインします。
@@ -99,8 +74,8 @@ class AuthController extends Controller
                         ->first();
                     if ($externalAccount) {
                         // ログイン
-                        Auth::guard($this->getGuard())->login($externalAccount->user, session('remember'));
-                        return $this->handleUserWasAuthenticated($request, false);
+                        $this->guard()->login($externalAccount->user, session('remember'));
+                        return $this->sendLoginResponse($request, false);
                     } else {
                         // 新規登録
                         return $this->regist($externalAccountUserData);
@@ -209,7 +184,7 @@ class AuthController extends Controller
      */
     protected function regist(array $externalAccountUserData): RedirectResponse
     {
-        Auth::guard($this->getGuard())->login($this->create($externalAccountUserData), session('remember'));
+        $this->guard()->login($this->create($externalAccountUserData), session('remember'));
         return redirect($this->redirectPath());
     }
 
@@ -267,15 +242,15 @@ class AuthController extends Controller
             'link' => $link,
         ];
     }
-    
+
     /**
-     * Create a new authentication controller instance.
+     * Create a new controller instance.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest');
     }
 
     /**
@@ -289,7 +264,7 @@ class AuthController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|min:6|confirmed',
         ]);
     }
 

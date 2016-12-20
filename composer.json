@@ -18,7 +18,7 @@
         "php": ">=7.1",
         "ext-gettext": "*",
         "ext-mbstring": "*",
-        "laravel/framework": "5.2.*",
+        "laravel/framework": "5.3.*",
         "laravel/socialite": "^2.0.20",
         "laravelcollective/html": "^5.2.4",
         "esperecyan/dictionary-php": "^0.7.8",
@@ -38,8 +38,8 @@
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "^5.7.4",
-        "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*",
+        "symfony/css-selector": "^3.1",
+        "symfony/dom-crawler": "^3.1",
         "barryvdh/laravel-ide-helper": "^2.2.2"
     },
     "autoload": {
@@ -61,22 +61,20 @@
     },
     "scripts": {
         "post-root-package-install": [
-            "php -r \"copy('.env.example', '.env');\"",
-            "php -r \"file_put_contents('.apache.conf', str_replace('{PROJECT_DIR}', __DIR__, file_get_contents('.apache.conf.example'))); \"",
-            "php -r \"copy('favicon.ico', 'public/favicon.ico');\""
+            "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "php -r \"file_exists('.apache.conf') || file_put_contents('.apache.conf', str_replace('{PROJECT_DIR}', __DIR__, file_get_contents('.apache.conf.example'))); \"",
+            "php -r \"file_exists('public/favicon.ico') || copy('favicon.ico', 'public/favicon.ico');\""
         ],
         "post-create-project-cmd": [
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "php artisan clear-compiled",
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
             "php artisan optimize",
             "php artisan view:clear"
         ],
-        "pre-update-cmd": [
-            "php artisan clear-compiled"
-        ],
         "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize",
             "php artisan ide-helper:generate"
         ]

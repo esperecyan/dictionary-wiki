@@ -93,8 +93,8 @@ class HtmlServiceProvider extends BaseHtmlServiceProvider
                     string $type = null
                 ): HtmlString {
                     $html = (string)$formControl;
-                    if ($name) {
-                        if (!in_array($type, ['checkbox', 'radio'])) {
+                    if ($name && !in_array($type, ['hidden', 'radio', 'submit', 'reset', 'button'])) {
+                        if ($type !== 'checkbox') {
                             $html .= $this->errors($name);
                         }
                         if (isset($options['required'])) {

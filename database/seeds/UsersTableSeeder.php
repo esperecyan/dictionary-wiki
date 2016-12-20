@@ -39,11 +39,9 @@ class UsersTableSeeder extends Seeder
             $externalAccounts = $user->externalAccounts()->get();
             
             $user->name_provider_id = $faker->randomElement($externalAccounts->toArray())['id'];
-            $emaildProvider
-                = $faker->optional()->randomElement($externalAccounts->whereLoose('email', true)->toArray());
+            $emaildProvider = $faker->optional()->randomElement($externalAccounts->where('email', true)->toArray());
             $user->email_provider_id = $emaildProvider['id'];
-            $avatarProvider
-                = $faker->optional()->randomElement($externalAccounts->whereLoose('avatar', true)->toArray());
+            $avatarProvider = $faker->optional()->randomElement($externalAccounts->where('avatar', true)->toArray());
             $user->avatar_provider_id = $avatarProvider['id'];
             $user->save();
         });

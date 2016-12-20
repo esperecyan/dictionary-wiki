@@ -3,12 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Http\Exception\PostTooLargeException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -23,10 +20,12 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
-        ValidationException::class,
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Validation\ValidationException::class,
     ];
 
     /**
@@ -34,27 +33,27 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
-        parent::report($e);
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function render($request, Exception $e)
+    public function render($request, Exception $exception)
     {
-        if ($e instanceof TokenMismatchException) {
+        if ($exception instanceof TokenMismatchException) {
             return back(Response::HTTP_SEE_OTHER)->with('_status', Response::HTTP_FORBIDDEN)
                 ->withErrors(_('セッション切れです。もう一度送信をお願いします。'))->withInput();
-        } elseif ($e instanceof PostTooLargeException) {
+        } elseif ($exception instanceof PostTooLargeException) {
             $byteFormatter = new ByteFormatter();
             return back(Response::HTTP_SEE_OTHER)->with('_status', Response::HTTP_REQUEST_ENTITY_TOO_LARGE)
                 ->withErrors(sprintf(
@@ -62,8 +61,8 @@ class Handler extends ExceptionHandler
                     $byteFormatter->format($request->server('CONTENT_LENGTH')),
                     $byteFormatter->format((new IniGetWrapper())->getBytes('post_max_size'))
                 ));
-        } elseif ($e instanceof UploadException) {
-            switch ($e->getCode()) {
+        } elseif ($exception instanceof UploadException) {
+            switch ($exception->getCode()) {
                 case UPLOAD_ERR_INI_SIZE:
                 case UPLOAD_ERR_FORM_SIZE:
                     $status = Response::HTTP_REQUEST_ENTITY_TOO_LARGE;
@@ -75,8 +74,24 @@ class Handler extends ExceptionHandler
                 default:
                     $status = Response::HTTP_INTERNAL_SERVER_ERROR;
             }
-            return back(Response::HTTP_SEE_OTHER)->with('_status', $status)->withErrors($e->getMessage())->withInput();
+            return back(Response::HTTP_SEE_OTHER)
+                ->with('_status', $status)->withErrors($exception->getMessage())->withInput();
         }
-        return parent::render($request, $e);
+        return parent::render($request, $exception);
+    }
+
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+        return redirect()->guest('login');
     }
 }

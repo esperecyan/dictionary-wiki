@@ -4,6 +4,7 @@ namespace App;
 
 use esperecyan\webidl\TypeError;
 use esperecyan\url\URL;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo};
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +12,7 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
-    use SoftDeletes;
+    use Notifiable, SoftDeletes;
     
     /** プロフィールの最大文字数。
      *
@@ -82,7 +83,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes excluded from the model's JSON form.
+     * The attributes that should be hidden for arrays.
      *
      * @var array
      */
@@ -185,7 +186,7 @@ class User extends Authenticatable
     public function getLinksAttribute(): Collection
     {
         return $this->getRelationValue('externalAccounts')
-            ->where('available', true)->whereLoose('link', true)->where('public', true)
+            ->where('available', true)->where('link', true)->where('public', true)
             ->pluck('link', 'provider');
     }
 }

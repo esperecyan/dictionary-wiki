@@ -1,3 +1,6 @@
+<?php
+use Illuminate\Support\HtmlString;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,7 +85,9 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/dictionaries/create') }}"><i class="fa fa-btn fa-plus"></i>{{ _('辞書の新規作成') }}</a></li>
                                 <li><a href="{{ url('/home/edit') }}"><i class="fa fa-btn fa-cog"></i>{{ _('ユーザー設定') }}</a></li>
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{ _('ログアウト') }}</a></li>
+                                <li>{{ Form::open(['url' => '/logout']) }}
+                                    <button><i class="fa fa-btn fa-sign-out"></i>{{ _('ログアウト') }}</button>
+                                {{ Form::close() }}</li>
                             </ul>
                         </li>
                     @endif

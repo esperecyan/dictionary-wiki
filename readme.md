@@ -28,7 +28,7 @@ wikiの作成
    `chmod --recursive g+w {storage,bootstrap/cache}`  
    `sudo chgrp --recursive apache {storage,bootstrap/cache}`
 1. 「.env」ファイルに、データベース設定、OAuthログイン用のクライアントIDとクライアントシークレットを記述します。
-   実運用環境であれば、`APP_ENV=production` `APP_DEBUG=false` も設定しておき、
+   実運用環境であれば、`APP_ENV=production` `APP_DEBUG=false` `APP_LOG_LEVEL=notice` も設定しておき、
    キャッシュの作成に利用する `APP_URL` にwikiトップページのURLを末尾のスラッシュを抜いて記述します。
 1. マイグレーションを実行します。
    `php artisan migrate --force`  
