@@ -14,17 +14,29 @@
 Route::get('/', 'HomeController@welcome');
 
 // Authentication and Registration Routes...
-Route::get('login', 'Auth\\LoginController@showLoginForm');
-Route::post('login', 'Auth\\LoginController@login');
-Route::post('logout', 'Auth\\LoginController@logout');
-Route::get('auth/callback', 'Auth\\RegisterController@handleProviderCallback');
+Route::get('auth/callback', 'Auth\\ExternalAccountsController@handleProviderCallback')
+    ->middleware(\App\Http\Middleware\MergeOldInput::class);
+
+// Authentication Routes...
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\ExternalAccountsController@requestAuthorization')->name('users.login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+// Registration Routes...
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\ExternalAccountsController@requestAuthorization')->name('users.store');
 
 Route::get('home', 'HomeController@index');
 Route::get('home/edit', 'HomeController@showEditForm');
 Route::post('home/edit', 'HomeController@edit');
 
+Route::post('users/external-accounts/update', 'Auth\ExternalAccountsController@requestAuthorization')
+    ->name('users.external-accounts.update');
+Route::post('users/external-accounts', 'Auth\ExternalAccountsController@requestAuthorization')
+    ->name('users.external-accounts.store');
+
 // ユーザー
-Route::resource('users', 'UsersController', ['except' => ['create', 'edit']]);
+Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
 
 // 辞書
 Route::resource('dictionaries', 'DictionariesController');

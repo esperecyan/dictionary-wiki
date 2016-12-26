@@ -99,12 +99,9 @@ class HomeController extends Controller
      */
     protected function refresh(Request $request): BaseRedirectResponse
     {
-        $this->validate($request, ['refresh' => 'exists:external_accounts,provider,user_id,' . Auth::user()->id]);
-        
-        $request->session()->flash('provider', $request->input('refresh'));
-        $request->session()->flash('action', 'refresh');
-        
-        return Socialite::driver(session('provider'))->redirect();
+        $this->validate($request, ['provider' => 'exists:external_accounts,provider,user_id,' . Auth::user()->id]);
+        $request->flash();
+        return Socialite::driver($request->input('provider'))->redirect();
     }
     
     /**
@@ -113,17 +110,14 @@ class HomeController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function connect(Request $request): BaseRedirectResponse
+    public function connect(Request $request): BaseRedirectResponse
     {
-        $this->validate($request, ['connect' => [
+        $this->validate($request, ['provider' => [
             'in:' . implode(',', config('auth.services')),
             'unique:external_accounts,provider,NULL,id,user_id,' . Auth::user()->id
         ]]);
-        
-        $request->session()->flash('provider', $request->input('connect'));
-        $request->session()->flash('action', 'connect');
-        
-        return Socialite::driver(session('provider'))->redirect();
+        $request->flash();
+        return Socialite::driver($request->input('provider'))->redirect();
     }
     
     /**

@@ -75,7 +75,8 @@ use Illuminate\Support\HtmlString;
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">{{ _('ログイン・新規登録') }}</a></li>
+                        <li><a href="{{ url('/login') }}">{{ _('ログイン') }}</a></li>
+                        <li><a href="{{ url('/register') }}">{{ _('ユーザー登録') }}</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

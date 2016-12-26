@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('markdown', 'App\\Validators\\MarkdownValidator@validate');
         Validator::extend('dictionary_file', 'App\\Validators\\DictionaryFileValidator@validate');
         Validator::extend('dictionary', 'App\\Validators\\DictionaryValidator@validate');
+        Validator::extend('external_account', 'App\\Validators\\ExternalAccountValidator@validate');
     }
 
     /**

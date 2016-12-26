@@ -116,14 +116,14 @@
                                                 </td>
                                                 <td>
                                                     @if ($externalAccount)
-                                                        <button name="refresh" value="{{ $service }}" >
+                                                        <button formaction="{{ route('users.external-accounts.update') }}" name="provider" value="{{ $service }}">
                                                             {{ _('更新') }}
                                                         </button>
                                                         <button name="disconnect" value="{{ $service }}"{!! $userCanDisconnect ? '' : ' disabled="" title="' . e(_('連携を解除するには、別の外部アカウントを登録する必要があります。')) . '"' !!}>
                                                             {{ _('連携を解除') }}
                                                         </button>
                                                     @else
-                                                        <button name="connect" value="{{ $service }}" >
+                                                        <button formaction="{{ route('users.external-accounts.store') }}" name="provider" value="{{ $service }}">
                                                             {{ _('連携') }}
                                                         </button>
                                                     @endif
