@@ -38,7 +38,7 @@ Require all granted
     Header unset x-content-type-options
 
     # Content Security Policy の設定
-    Header always set content-security-policy "default-src 'none'; frame-ancestors 'none'; style-src 'self' https://cdnjs.cloudflare.com/ajax/libs/font-awesome/ https://fonts.googleapis.com/css https://maxcdn.bootstrapcdn.com/bootstrap/ 'unsafe-inline'; img-src 'self' https://*.githubusercontent.com/u/ https://graph.facebook.com/ https://scontent.xx.fbcdn.net/ https://*.googleusercontent.com/ https://pbs.twimg.com/profile_images/ https://abs.twimg.com/sticky/default_profile_images/; media-src 'self'; script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/jquery/ https://maxcdn.bootstrapcdn.com/bootstrap/; font-src https://cdnjs.cloudflare.com/ajax/libs/font-awesome/ https://fonts.gstatic.com/s/lato/"
+    Header always set content-security-policy "default-src 'none'; frame-ancestors 'none'; style-src 'self' https://cdnjs.cloudflare.com/ajax/libs/font-awesome/ https://fonts.googleapis.com/css https://maxcdn.bootstrapcdn.com/bootstrap/ 'unsafe-inline'; img-src 'self' https://*.githubusercontent.com/u/ https://graph.facebook.com/ https://scontent.xx.fbcdn.net/ https://*.googleusercontent.com/ https://pbs.twimg.com/profile_images/ https://abs.twimg.com/sticky/default_profile_images/; media-src 'self'; script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/jquery/ https://maxcdn.bootstrapcdn.com/bootstrap/; connect-src 'self'; font-src https://cdnjs.cloudflare.com/ajax/libs/font-awesome/ https://fonts.gstatic.com/s/lato/"
     <If "file(%{CONTEXT_DOCUMENT_ROOT} . '/../.env') -strcmatch '*APP_DEBUG=true*'">
         # barryvdh/laravel-debugbar 用の設定
         Header always edit* content-security-policy img-src|font-src "$0 data:"

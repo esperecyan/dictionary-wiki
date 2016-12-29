@@ -121,7 +121,9 @@ use Illuminate\Support\HtmlString;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
-    
+    @if (config('app.debug'))
+        <script src="{{ asset('js/debugbar-bugfix.es') }}"></script>
+    @endif
     @yield('scripts')
 </body>
 </html>

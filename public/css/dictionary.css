@@ -6,3 +6,18 @@ td video {
 	max-width: 10em;
 	max-height: 10em;
 }
+
+/*====================================
+	クリップボードにコピー
+*/
+#copy-buttons ul {
+	list-style: none;
+}
+
+[name="copy"] {
+	margin-bottom: 0.3em;
+}
+[name="copy"] .fa {
+	margin-right: 0.5em;
+}
+

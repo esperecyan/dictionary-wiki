@@ -65,6 +65,40 @@ use esperecyan\html_filter\Filter;
             </dd>
             @endif
         </div>
+        <div
+            class="list-group-item" id="copy-buttons" title="{{ _('JavaScriptを有効化する必要があります。') }}">
+            <dt></dt>
+            <dd class="row">
+                <ul class="col-md-8">
+                    <li>
+                        <button type="button" name="copy" value="quiz" disabled="" class="btn btn-default"
+                            data-file="{{ _('画像・音声ファイルを含むInteligenceω クイズ辞書は、ダウンロードする必要があります。') }}">
+                            <i class="fa fa-clipboard"></i>
+                            {{ _('Inteligenceω クイズの辞書のURLをクリップボードにコピー') }}
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" name="copy" value="siri" disabled="" class="btn btn-default">
+                            <i class="fa fa-clipboard"></i>
+                            {{ _('Inteligenceω しりとりの辞書のURLをクリップボードにコピー') }}
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" name="copy" value="pictsense" disabled="" class="btn btn-default">
+                            <i class="fa fa-clipboard"></i>
+                            {{ _('ピクトセンスの辞書の内容をクリップボードにコピー') }}
+                        </button>
+                    </li>
+                </ul>
+                <div class="col-md-4">
+                    <div
+                        role="alert"
+                        data-success="{{ _('コピーしました。') }}"
+                        data-failure="{{ _('クリップボードに書き込めませんでした。') }}">
+                    </div>
+                </div>
+            </dd>
+        </div>
         <div class="list-group-item{{ count($records[0]) > 6 ? ' many-columns' : '' }}" id="words">
             <dt class="list-group-item-heading">お題一覧</dt>
             <table class="table">
@@ -140,5 +174,7 @@ use esperecyan\html_filter\Filter;
 @endsection
 
 @section('scripts')
+<script src="{{ asset('js/polyfills.es') }}"></script>
 <script src="{{ asset('js/form-dictionary-show.es') }}"></script>
+<script src="{{ asset('js/dictionary-clipboard.es') }}"></script>
 @endsection
