@@ -66,3 +66,25 @@ if (! function_exists('errors')) {
             : [];
     }
 }
+
+/**
+ * 指定したモデルに対応するパラメータ名を取得します。
+ *
+ * @param  \Illuminate\Database\Eloquent\Model|string  $model
+ * @return string
+ */
+function parameter_name($model): string
+{
+    return snake_case(class_basename($model), '-');
+}
+
+/**
+ * 指定したモデルに対応するリソース名を取得します。
+ *
+ * @param  \Illuminate\Database\Eloquent\Model|string  $model
+ * @return string
+ */
+function resource_name($model): string
+{
+    return str_replace('_', '-', str_plural(snake_case(class_basename($model))));
+}

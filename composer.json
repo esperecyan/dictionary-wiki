@@ -32,7 +32,9 @@
         "james-heinrich/getid3": "^1.9.13",
         "paulfitz/daff-php": "^1.3.16",
         "ccampbell/chromephp": "^4.1.0",
-        "barryvdh/laravel-debugbar": "^2.3.0"
+        "barryvdh/laravel-debugbar": "^2.3.0",
+        "riari/laravel-forum": "^3.1.6",
+        "riari/laravel-forum-frontend": "^1.1.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

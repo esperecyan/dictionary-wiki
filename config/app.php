@@ -170,6 +170,8 @@ return array_merge_recursive([
         App\Providers\HtmlServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Riari\Forum\ForumServiceProvider::class,
+        Riari\Forum\Frontend\ForumFrontendServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasForumCategory;
     
     /** プロフィールの最大文字数。
      *
@@ -49,6 +49,13 @@ class User extends Authenticatable
         ],
         'thead', 'time' => 'datetime', 'tr', 'u', 'ul', 'var', 'wbr',
     ];
+    
+    /**
+     * 各モデルに対応するCategoryの親となるCategoryのid。
+     *
+     * @var int
+     */
+    const PARENT_FORUM_CATEGORY_ID = 2;
     
     /**
      * 日付へキャストする属性。

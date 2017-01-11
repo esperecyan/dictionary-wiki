@@ -1,5 +1,6 @@
 <?php
 use esperecyan\html_filter\Filter;
+use Illuminate\Support\HtmlString;
 
 $shownUser->load('externalAccounts');
 $revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 'DESC')->getResults();
@@ -8,7 +9,22 @@ $revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 
 
 @section('title', e($shownUser->name . ' | ' . _('ユーザー')))
 
+@section('styles')
+    <link href="{{ asset('css/nav-tabs.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
+<nav class="tabs">
+    <ul class="nav nav-tabs nav-tabs-justified">
+        <li class="active"><a href="#">{{ _('詳細') }}</a></li>
+        <?php $threadsCount = $shownUser->forumCategory()->withCount('threads')->first()->threads_count; ?>
+        <li>{{ link_to_route(
+            'users.threads.index',
+            new HtmlString(e(_('コメント欄')) . ($threadsCount > 0 ? " <span class=\"badge\">$threadsCount</span>" : '')),
+            ['model' => $shownUser->id]
+        ) }}</li>
+    </ul>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">

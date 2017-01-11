@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+    <link href="{{ asset('css/sticky-footer-navbar.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -14,4 +18,16 @@
         </div>
     </div>
 </div>
+
+<footer class="footer navbar navbar-default">
+    <nav>
+        <div class="container">
+            <div class="collapse navbar-collapse" id="site-feedback">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>{{ link_to_route('site.threads.index', _('サイトのフィードバック')) }}</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</footer>
 @endsection

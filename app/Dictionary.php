@@ -11,7 +11,7 @@ use FilesystemIterator;
 
 class Dictionary extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasForumCategory;
     
     /**
      * 言語タグの最大文字数。
@@ -33,6 +33,13 @@ class Dictionary extends Model
      * @var int
      */
     const MAX_FIELD_LENGTH = 400;
+    
+    /**
+     * 各モデルに対応するCategoryの親となるCategoryのid。
+     *
+     * @var int
+     */
+    const PARENT_FORUM_CATEGORY_ID = 1;
     
     /**
      * モデルのタイムスタンプを更新するかの指示。

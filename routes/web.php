@@ -49,3 +49,30 @@ Route::get('dictionaries/{dictionary}/files/{file}', ['as' => 'dictionaries.file
 Route::get('dictionaries/{dictionary}/revisions/diff', 'RevisionsController@diff')
     ->name('dictionaries.revisions.diff');
 Route::resource('dictionaries.revisions', 'RevisionsController', ['only' => 'show']);
+
+// コメント欄
+Route::group(['namespace' => 'Forum', 'middleware' => App\Http\Middleware\ForumImplicitBinding::class], function () {
+    foreach ([App\Dictionary::class, App\User::class, null] as $model) {
+        $resourceName = $model
+            ? resource_name($model)
+            : App\Http\Controllers\Forum\CategoriesController::SITE_FORUM_CATEGORY_TITLE;
+        Route::group([
+            'prefix' => $resourceName . ($model ? '/{' . parameter_name($model) . '}' : '') . '/threads',
+            'as' => "$resourceName.threads.",
+        ], function () use ($resourceName) {
+            Route::get('new', 'ThreadsController@indexNew')->name('index-new');
+            Route::patch('new', 'ThreadsController@markNew')->name('mark-new');
+            Route::get('', "CategoriesController@{$resourceName}ThreadsIndex")->name('index');
+            Route::get('create', "ThreadsController@{$resourceName}ThreadsCreate")->name('create');
+            Route::post('', "ThreadsController@{$resourceName}ThreadsStore")->name('store');
+            Route::group(['prefix' => '{thread}'], function () use ($resourceName) {
+                Route::get('', "ThreadsController@{$resourceName}ThreadsShow")->name('show');
+                Route::group(['prefix' => 'posts/{post}', 'as' => 'posts.'], function () use ($resourceName) {
+                    Route::get('create', "PostsController@{$resourceName}PostsCreate")->name('create');
+                    Route::post('', "PostsController@{$resourceName}PostsStore")->name('store');
+                    Route::get('', "PostsController@{$resourceName}PostsShow")->name('show');
+                });
+            });
+        });
+    }
+});

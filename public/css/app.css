@@ -1,3 +1,4 @@
+
 .panel-title > a:link,
 .panel-title > a:visited {
 	color: #337ab7;
@@ -101,4 +102,9 @@ dd.btn-group ~ dd.btn-group > .btn:last-of-type {
 	width: calc(100vw - 2em);
 	position: relative;
 	left: calc(-1 * (100vw - 2em) / 2 + 100% / 2);
+}
+
+/* フッター */
+.footer.navbar {
+	margin-bottom: 0;
 }

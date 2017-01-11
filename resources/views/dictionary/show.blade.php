@@ -1,5 +1,6 @@
 <?php
 use esperecyan\html_filter\Filter;
+use Illuminate\Support\HtmlString;
 ?>
 @extends('layouts.app')
 
@@ -7,9 +8,21 @@ use esperecyan\html_filter\Filter;
 
 @section('styles')
     <link href="{{ asset('css/dictionary.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/nav-tabs.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
+<nav class="tabs">
+    <ul class="nav nav-tabs nav-tabs-justified">
+        <li class="active"><a href="#">{{ _('詳細') }}</a></li>
+        <?php $postsCount = $dictionary->forumCategory->threads()->withCount('posts')->get()->sum('posts_count'); ?>
+        <li>{{ link_to_route(
+            'dictionaries.threads.index',
+            new HtmlString(e(_('コメント欄')) . ($postsCount > 0 ? " <span class=\"badge\">$postsCount</span>" : '')),
+            ['model' => $dictionary->id]
+        ) }}</li>
+    </ul>
+</nav>
 <div class="container"><div class="row"><div class="col-md-8 col-md-offset-2"><div class="panel panel-default">
     <h1 class="panel-heading panel-title">
         <span class="label label-primary">{{ $dictionary->categoryName }}</span>

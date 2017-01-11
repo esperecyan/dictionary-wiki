@@ -1,0 +1,6 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+
+nav.tabs {
+	display: flex;
+	justify-content: center;
+}
