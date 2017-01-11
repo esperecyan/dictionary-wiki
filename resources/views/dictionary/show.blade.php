@@ -19,7 +19,8 @@ use Illuminate\Support\HtmlString;
         <li>{{ link_to_route(
             'dictionaries.threads.index',
             new HtmlString(e(_('コメント欄')) . ($postsCount > 0 ? " <span class=\"badge\">$postsCount</span>" : '')),
-            ['model' => $dictionary->id]
+            ['model' => $dictionary->id],
+            $postsCount === 0 ? ['rel' => 'nofollow'] : []
         ) }}</li>
     </ul>
 </nav>

@@ -6,6 +6,7 @@ use Illuminate\Support\HtmlString;
 <head>
     <link rel="icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @yield('metas')
 
     <title>@hasSection('title')@yield('title') | @endif{{ _('辞書まとめwiki') }} α版</title>
 
