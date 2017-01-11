@@ -18,7 +18,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check() && $request->path() !== 'auth/callback') {
-            return redirect('/home');
+            return redirect()->route('users.show', ['user' => Auth::user()->id]);
         }
 
         return $next($request);

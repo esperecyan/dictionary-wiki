@@ -67,7 +67,6 @@ use Illuminate\Support\HtmlString;
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
                     <li><a href="{{ url('/dictionaries') }}">{{ _('辞書一覧') }}</a></li>
                     <li><a href="{{ url('/users') }}">{{ _('ユーザー一覧') }}</a></li>
                 </ul>
@@ -87,6 +86,7 @@ use Illuminate\Support\HtmlString;
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/dictionaries/create') }}"><i class="fa fa-btn fa-plus"></i>{{ _('辞書の新規作成') }}</a></li>
                                 <li><a href="{{ url('/home/edit') }}"><i class="fa fa-btn fa-cog"></i>{{ _('ユーザー設定') }}</a></li>
+                                <li><a href="{{ route('users.show', ['user' => Auth::user()->id]) }}"><i class="fa fa-btn fa-user"></i>{{ _('プロフィール') }}</a></li>
                                 <li>{{ Form::open(['url' => '/logout']) }}
                                     <button><i class="fa fa-btn fa-sign-out"></i>{{ _('ログアウト') }}</button>
                                 {{ Form::close() }}</li>

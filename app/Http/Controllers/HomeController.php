@@ -32,16 +32,6 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index(): View
-    {
-        return view('home');
-    }
-
-    /**
      * ユーザー設定ページを表示します。
      *
      * @return \Illuminate\View\View

@@ -27,7 +27,7 @@ class ExternalAccountsController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
     
     /**
      * 外部アカウントへのアクセス許可を要求します。

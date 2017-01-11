@@ -26,7 +26,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\ExternalAccountsController@requestAuthorization')->name('users.store');
 
-Route::get('home', 'HomeController@index');
 Route::get('home/edit', 'HomeController@showEditForm');
 Route::post('home/edit', 'HomeController@edit');
 
