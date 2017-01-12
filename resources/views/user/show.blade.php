@@ -1,6 +1,7 @@
 <?php
 use esperecyan\html_filter\Filter;
 use Illuminate\Support\HtmlString;
+use App\ExternalAccount;
 
 $shownUser->load('externalAccounts');
 $revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 'DESC')->getResults();
@@ -36,8 +37,11 @@ $revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 
                 </div>
                 <dl class="panel-body">
                     <dt>外部アカウント</dt>
-                        <dd> @foreach($shownUser->links as $provider => $url)
-                            {!! link_to($url, $provider) !!}
+                        <dd class="service-buttons"> @foreach($shownUser->links as $provider => $url)
+                            <a href="{{ $url }}" rel="external" target="_blank" class="btn btn-info">
+                                <i class="fa fa-{{ $provider }}"></i>
+                                {{ ExternalAccount::getServiceDisplayName($provider) }}
+                            </a>
                         @endforeach </dd>
                     <dt>プロフィール</dt>
                         <dd> @if (!is_null($shownUser->profile))

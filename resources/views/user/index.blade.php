@@ -2,6 +2,10 @@
 
 @section('title', e(_('ユーザー一覧')))
 
+@section('styles')
+    <link href="{{ asset('css/external-accounts.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -25,7 +29,12 @@
                                 <th>{{ show_user($shownUser) }}</th>
                                 <td>
                                     @foreach($shownUser->links as $provider => $url)
-                                        {!! link_to($url, $provider) !!}
+                                        <a href="{{ $url }}" rel="external" target="_blank" class="service">
+                                            @if ($provider === 'google')<span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-1x"></i>
+                                                <i class="fa fa-google fa-inverse fa-stack-1x"></i>
+                                            </span>@else<i class="fa fa-{{ $provider }}-square">
+                                            </i>@endif<span class="text-hide">{{ $provider }}</span></a>
                                     @endforeach
                                 </td>
                                 <td class="text-right">{{ count($shownUser->revisions) }}</td>

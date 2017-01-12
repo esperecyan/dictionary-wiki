@@ -1,0 +1,57 @@
+@namespace url("http://www.w3.org/1999/xhtml");
+
+/*====================================
+	ログインボタン
+*/
+.social-login-buttons {
+	text-align: center;
+}
+
+.social-login-buttons button {
+	width: 15em;
+	height: 5em;
+	text-align: left;
+	position: relative;
+	margin: 0.5em;
+}
+
+.social-login-buttons button .fa {
+	font-size: 3em;
+	width: 1em;
+	vertical-align: top;
+}
+
+.social-login-buttons button b {
+	font-size: 1.7em;
+}
+
+.social-login-buttons button span {
+	position: absolute;
+	font-size: 0.9em;
+	right: 0.5em;
+	bottom: 0.5em;
+}
+
+/*====================================
+	セル内のサービス名
+*/
+td.with-service-logo .fa {
+	width: 1.1em;
+	text-decoration: inherit;
+	white-space: pre;
+}
+td.with-service-logo .fa::after {
+	content: "    ";
+	text-decoration: inherit;
+}
+
+/*====================================
+	ロゴのみのリンク
+*/
+a.service .fa {
+	font-size: 1.2em;
+	text-decoration: inherit;
+}
+a.service .fa-stack {
+	width: 1em;
+}

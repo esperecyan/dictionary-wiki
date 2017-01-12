@@ -1,4 +1,12 @@
+<?php
+use App\ExternalAccount;
+use Illuminate\Support\HtmlString;
+?>
 @extends('layouts.app')
+
+@section('styles')
+    <link href="{{ asset('css/external-accounts.css') }}" rel="stylesheet" />
+@endsection
 
 @section('content')
 <div class="container">
@@ -46,11 +54,15 @@
                                             $available = $externalAccount && $externalAccount->available;
                                             ?>
                                             <tr>
-                                                <td>
+                                                <td class="with-service-logo">
+                                                    <?php $serviceDisplayName = new HtmlString(
+                                                        "<i class=\"fa fa-$service\"></i>"
+                                                            . e(ExternalAccount::getServiceDisplayName($service))
+                                                    ); ?>
                                                     @if ($externalAccount && $externalAccount->link)
-                                                        {!! link_to($externalAccount->link, $service); !!}
+                                                        {!! link_to($externalAccount->link, $serviceDisplayName); !!}
                                                     @else
-                                                        {{ $service }}
+                                                        {{ $serviceDisplayName }}
                                                     @endif
                                                 </td>
                                                 <td>

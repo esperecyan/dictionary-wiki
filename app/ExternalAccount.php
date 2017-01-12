@@ -32,6 +32,23 @@ class ExternalAccount extends Model
      * @var (string|null)[][]
      */
     protected static $userDataList = [];
+    
+    /**
+     * サービスの表示名を取得します。
+     *
+     * @param  string  $provider  OAuthサービス名。
+     * @return srtring
+     */
+    public static function getServiceDisplayName(string $provider): string
+    {
+        return [
+            'github'   => _('GitHub'),
+            'facebook' => _('Facebook'),
+            'google'   => _('Google'),
+            'linkedin' => _('LinkedIn'),
+            'twitter'  => _('Twitter'),
+        ][$provider];
+    }
 
     /**
      * この外部アカウントが関連付けられたユーザーを取得します。
