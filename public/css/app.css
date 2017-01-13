@@ -1,15 +1,114 @@
+/*====================================
+	サイト全体に適用されるスタイル
+*/
 
+/*------------------------------------
+	リンク色
+*/
 .panel-title > a:link,
 .panel-title > a:visited {
 	color: #337ab7;
 }
 
+/*------------------------------------
+	ユーザーアイコン
+*/
+.user img {
+	max-height: 1em;
+	margin-right: 0.2em;
+}
+
+/*------------------------------------
+	辞書の語数
+*/
+.panel-heading.panel-title > .badge:last-of-type {
+	float: right;
+}
+dl.badge {
+	margin-bottom: 0;
+}
+dl.badge * {
+	display: inline;
+}
+dl.badge dt {
+	margin-right: 0.5em;
+}
+
+/*------------------------------------
+	ボタン風ダウンロードリンク
+*/
+dd.btn-group {
+	padding-left: 0;
+	display: flex;
+}
+dd.btn-group:first-of-type:not(:only-of-type) > .btn:first-of-type {
+	border-bottom-left-radius: 0;
+}
+dd.btn-group ~ dd.btn-group > .btn {
+	border-top: none;
+}
+dd.btn-group ~ dd.btn-group > .btn:first-of-type {
+	border-top-left-radius: 0;
+}
+dd.btn-group ~ dd.btn-group > .btn:last-of-type {
+	border-top-right-radius: 0;
+}
+
+/*------------------------------------
+	お題の表示
+*/
+.many-columns {
+	width: calc(100vw - 2em);
+	position: relative;
+	left: calc(-1 * (100vw - 2em) / 2 + 100% / 2);
+}
+
+/*====================================
+	Bootstrapの修正
+*/
+
+/*------------------------------------
+	ボタン内アイコンのマージン
+*/
+.fa-btn {
+	margin-right: 6px;
+}
+
+/*------------------------------------
+	無効化ボタンの色を薄く
+*/
+button[disabled] {
+	color: #6D6D6D;
+}
+
+/*------------------------------------
+	Bug fix
+*/
+legend.panel-heading {
+	float: left;
+}
+label.form-group {
+	display: block;
+}
+
+/*------------------------------------
+	フッター
+*/
+.footer.navbar {
+	margin-bottom: 0;
+}
+
+/*------------------------------------
+	リスト・グループの見出し
+*/
 .list-group-item-heading {
 	font-size: 1em;
 	font-weight: bold;
 }
 
-/* ログアウトボタン */
+/*------------------------------------
+	ログアウトボタン
+*/
 .dropdown-menu > li button {
 	display: block;
 	padding: 3px 20px;
@@ -33,20 +132,18 @@
 	background-repeat: repeat-x;
 }
 
-/* ユーザーアイコン */
-.user img {
-	max-height: 1em;
-	margin-right: 0.2em;
-}
-
-/* フォーム 必須の表示 */
+/*------------------------------------
+	フォーム 必須の表示
+*/
 .label.label-primary.required {
 	position: absolute;
 	top: 7px;
 	right: -3em;
 }
 
-/* 値の複数のリスト */
+/*------------------------------------
+	値の複数のリスト
+*/
 div.including-multiple-values,
 .including-multiple-values > div {
 	display: flex;
@@ -63,48 +160,4 @@ div.including-multiple-values,
 .including-multiple-values.including-labels dt,
 .including-multiple-values.including-labels dd {
 	margin-right: 0.2em;
-}
-
-/* 語数 */
-.panel-heading.panel-title > .badge:last-of-type {
-	float: right;
-}
-dl.badge {
-	margin-bottom: 0;
-}
-dl.badge * {
-	display: inline;
-}
-dl.badge dt {
-	margin-right: 0.5em;
-}
-
-/* ダウンロード */
-dd.btn-group {
-	padding-left: 0;
-	display: flex;
-}
-dd.btn-group:first-of-type:not(:only-of-type) > .btn:first-of-type {
-	border-bottom-left-radius: 0;
-}
-dd.btn-group ~ dd.btn-group > .btn {
-	border-top: none;
-}
-dd.btn-group ~ dd.btn-group > .btn:first-of-type {
-	border-top-left-radius: 0;
-}
-dd.btn-group ~ dd.btn-group > .btn:last-of-type {
-	border-top-right-radius: 0;
-}
-
-/* お題の表示 */
-.many-columns {
-	width: calc(100vw - 2em);
-	position: relative;
-	left: calc(-1 * (100vw - 2em) / 2 + 100% / 2);
-}
-
-/* フッター */
-.footer.navbar {
-	margin-bottom: 0;
 }

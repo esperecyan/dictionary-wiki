@@ -12,37 +12,12 @@ use Illuminate\Support\HtmlString;
 
     <!-- Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel="stylesheet" />
 
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
-
-    <style>
-        body {
-            font-family: 'Lato';
-        }
-
-        .fa-btn {
-            margin-right: 6px;
-        }
-        
-        button[disabled] {
-            color: #6D6D6D;
-        }
-        
-        /* Bug fix for Bootstrap */
-        legend.panel-heading {
-            float: left;
-        }
-        label.form-group {
-            display: block;
-        }
-        
-    </style>
-    
     @yield('styles')
 </head>
 <body id="app-layout">

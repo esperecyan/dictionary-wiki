@@ -96,10 +96,5 @@
 @stop
 
 @section ('footer')
-    <script>
-    $('tr input[type=checkbox]').change(function () {
-        var postRow = $(this).closest('tr').prev('tr');
-        $(this).is(':checked') ? postRow.addClass('active') : postRow.removeClass('active');
-    });
-    </script>
+    <script src="{{ asset('js/forum-thread-show.js') }}"></script>
 @stop

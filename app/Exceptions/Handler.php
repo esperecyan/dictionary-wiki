@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use bantu\IniGetWrapper\IniGetWrapper;
 use ScriptFUSION\Byte\ByteFormatter;
+use DOMDocument;
 
 class Handler extends ExceptionHandler
 {
@@ -78,6 +79,25 @@ class Handler extends ExceptionHandler
                 ->with('_status', $status)->withErrors($exception->getMessage())->withInput();
         }
         return parent::render($request, $exception);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    protected function convertExceptionToResponse(Exception $e): Response
+    {
+        $response = parent::convertExceptionToResponse($e);
+        
+        $doc = new DOMDocument();
+        $doc->loadHTML($response->getContent());
+        $link = $doc->createElement('link');
+        $link->setAttribute('href', asset('css/symfony-debug-exception.css'));
+        $link->setAttribute('rel', 'stylesheet');
+        $style = $doc->getElementsByTagName('style')->item(0);
+        $style->parentNode->replaceChild($link, $style);
+        $response->setContent($doc->saveHTML());
+        
+        return $response;
     }
 
     /**

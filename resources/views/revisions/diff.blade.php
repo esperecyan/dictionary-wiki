@@ -14,11 +14,7 @@ if (isset($diffData[1])) {
 @section('title', e(sprintf(_('「%s」の差分'), $dictionary->title)))
 
 @section('styles')
-    @if (isset($diffRender))
-    <style>
-        {{ $diffRender->sampleCss() }}
-    </style>
-    @endif
+    <link href="{{ asset('css/diffrender-sample.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
