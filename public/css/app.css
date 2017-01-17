@@ -161,3 +161,17 @@ div.including-multiple-values,
 .including-multiple-values.including-labels dd {
 	margin-right: 0.2em;
 }
+
+/*====================================
+	コンテナの幅を固定
+	
+	.container の幅について
+		• Large devices       — Medium devices と同じ固定幅に
+		• Medium devices      — そのまま
+		• Small devices       — Extra small devices と同じ全幅に
+		• Extra small devices — そのまま
+*/
+.container {
+	width: auto;
+	max-width: 970px;
+}

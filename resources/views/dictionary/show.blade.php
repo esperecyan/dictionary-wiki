@@ -6,10 +6,10 @@ use Illuminate\Support\HtmlString;
 
 @section('title', e($dictionary->title))
 
-@section('styles')
+@push('styles')
     <link href="{{ asset('css/dictionary.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/nav-tabs.css') }}" rel="stylesheet" />
-@endsection
+@endpush
 
 @section('content')
 <nav class="tabs">
@@ -24,7 +24,7 @@ use Illuminate\Support\HtmlString;
         ) }}</li>
     </ul>
 </nav>
-<div class="container"><div class="row"><div class="col-md-8 col-md-offset-2"><div class="panel panel-default">
+<div class="panel panel-default">
     <h1 class="panel-heading panel-title">
         <span class="label label-primary">{{ $dictionary->categoryName }}</span>
         <bdi>{{ $dictionary->title }}</bdi>
@@ -184,11 +184,11 @@ use Illuminate\Support\HtmlString;
             </dd>
         </div>
     </dl>
-</div></div></div></div>
+</div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script src="{{ asset('js/polyfills.es') }}"></script>
 <script src="{{ asset('js/form-dictionary-show.es') }}"></script>
 <script src="{{ asset('js/dictionary-clipboard.es') }}"></script>
-@endsection
+@endpush

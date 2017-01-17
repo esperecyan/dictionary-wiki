@@ -5,8 +5,7 @@ use Illuminate\Support\HtmlString;
 <html>
 <head>
     <link rel="icon" href="{{ asset('favicon.ico') }}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @yield('metas')
+    @stack('metas')
 
     <title>@hasSection('title')@yield('title') | @endif{{ _('辞書まとめwiki') }} α版</title>
 
@@ -14,11 +13,12 @@ use Illuminate\Support\HtmlString;
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- Styles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
-    @yield('styles')
+    @stack('styles')
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default">
@@ -74,24 +74,24 @@ use Illuminate\Support\HtmlString;
     </nav>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                @if (session('success'))
-                    <div class="alert alert-success" role="alert">{{ _('成功しました。') }}</div>
-                @endif
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">{{ _('成功しました。') }}</div>
+        @endif
 
-                @if (count($errors) > 0)
-                <ul class="list-group">
-                    @foreach ($errors->all() as $error)
-                    <li class="list-group-item list-group-item-danger"><span role="alert">{{ $error }}</span></li>
-                    @endforeach
-                </ul>
-                @endif
-            </div>
-        </div>
+        @if (count($errors) > 0)
+        <ul class="list-group">
+            @foreach ($errors->all() as $error)
+                <li class="list-group-item list-group-item-danger"><span role="alert">{{ $error }}</span></li>
+            @endforeach
+        </ul>
+        @endif
     </div>
 
-    @yield('content')
+    <main class="container @stack('main-classes')">
+        @yield('content')
+    </main>
+    
+    @yield('footer')
 
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -100,6 +100,6 @@ use Illuminate\Support\HtmlString;
     @if (config('app.debug'))
         <script src="{{ asset('js/debugbar-bugfix.es') }}"></script>
     @endif
-    @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

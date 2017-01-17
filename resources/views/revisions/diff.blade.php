@@ -13,12 +13,12 @@ if (isset($diffData[1])) {
 
 @section('title', e(sprintf(_('「%s」の差分'), $dictionary->title)))
 
-@section('styles')
+@push('styles')
     <link href="{{ asset('css/diffrender-sample.css') }}" rel="stylesheet" />
-@endsection
+@endpush
 
 @section('content')
-<div class="container"><div class="row"><div class="col-md-8 col-md-offset-2"><div class="panel panel-default">
+<div class="panel panel-default">
     <h1 class="panel-heading panel-title">
         {!! sprintf(e(_('%sの差分')), link_to_route(
             'dictionaries.show',
@@ -115,5 +115,5 @@ if (isset($diffData[1])) {
         </section>
         @endif
     </div>
-</div></div></div></div>
+</div>
 @endsection

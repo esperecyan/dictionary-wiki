@@ -8,35 +8,29 @@ use App\ExternalAccount;
     <meta name="robots" content="noindex" />
 @endsection
 
-@section('styles')
+@push('styles')
     <link href="{{ asset('css/external-accounts.css') }}" rel="stylesheet" />
-@endsection
+@endpush
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">@yield('title')</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="@yield('action')">
-                        {{ csrf_field() }}
-                        
-                        <div class="social-login-buttons">
-                            @foreach (config('auth.services') as $service)
-                                <button type="submit" name="provider" value="{{ $service }}" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-{{ $service }}"></i>
-                                    <b>{{ ExternalAccount::getServiceDisplayName($service) }}</b>
-                                    <span>{{ _('のアカウントでログイン') }}</span>
-                                </button>
-                            @endforeach
-                        </div>
+<div class="panel panel-default">
+    <div class="panel-heading">@yield('title')</div>
+    <div class="panel-body">
+        <form class="form-horizontal" method="POST" action="@yield('action')">
+            {{ csrf_field() }}
 
-                        @yield('form-before-end')
-                    </form>
-                </div>
+            <div class="social-login-buttons">
+                @foreach (config('auth.services') as $service)
+                    <button type="submit" name="provider" value="{{ $service }}" class="btn btn-primary">
+                        <i class="fa fa-btn fa-{{ $service }}"></i>
+                        <b>{{ ExternalAccount::getServiceDisplayName($service) }}</b>
+                        <span>{{ _('のアカウントでログイン') }}</span>
+                    </button>
+                @endforeach
             </div>
-        </div>
+
+            @yield('form-before-end')
+        </form>
     </div>
 </div>
 @endsection
