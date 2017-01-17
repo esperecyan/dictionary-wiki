@@ -63,6 +63,13 @@ dd.btn-group ~ dd.btn-group > .btn:last-of-type {
 	left: calc(-1 * (100vw - 2em) / 2 + 100% / 2);
 }
 
+/*------------------------------------
+	注釈メッセージのアイコン化
+*/
+.message-icon {
+	cursor: default;
+}
+
 /*====================================
 	Bootstrapの修正
 */

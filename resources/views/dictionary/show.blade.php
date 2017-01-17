@@ -28,11 +28,7 @@ use Illuminate\Support\HtmlString;
     <h1 class="panel-heading panel-title">
         <span class="label label-primary">{{ $dictionary->categoryName }}</span>
         <bdi>{{ $dictionary->title }}</bdi>
-        @if ($dictionary->regard)
-            <span title="{{ _('ひらがな (カタカナ) 以外が答えに含まれるお題があります') }}">
-                {{ _('ひらがな (カタカナ) 以外が答えに含まれるお題があります') }}
-            </span>
-        @endif
+        {{ Html::showDictionaryWarnings($dictionary) }}
         <dl class="badge"><dt>{{ _('語数') }}</dt><dd>{{ $dictionary->words }}</dd></dl>
     </h1>
     <dl class="panel-body list-group">

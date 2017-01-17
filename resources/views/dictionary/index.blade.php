@@ -29,13 +29,7 @@ use App\Dictionary;
                     }}</bdi></th>
                     <td class="text-right">{{ $dictionary->words }}</td>
                     <td>{!! show_time($dictionary->revision->created_at) !!}</td>
-                    <td>
-                        @if ($dictionary->regard)
-                            <span title="{{ _('ひらがな (カタカナ) 以外が答えに含まれるお題があります') }}">
-                                {{ _('ひらがな (カタカナ) 以外が答えに含まれるお題があります') }}
-                            </span>
-                        @endif
-                    </td>
+                    <td>{{ Html::showDictionaryWarnings($dictionary) }}</td>
                 </tr>
             @endforeach
         </tbody>
