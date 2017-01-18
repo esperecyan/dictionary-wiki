@@ -10,12 +10,12 @@ use Illuminate\Support\HtmlString;
     <title>@hasSection('title')@yield('title') | @endif{{ _('辞書まとめwiki') }} α版</title>
 
     <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet" />
 
     <!-- Styles -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap-theme.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     @stack('styles')
@@ -94,8 +94,8 @@ use Illuminate\Support\HtmlString;
     @yield('footer')
 
     <!-- JavaScripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
     @if (config('app.debug'))
         <script src="{{ asset('js/debugbar-bugfix.es') }}"></script>

@@ -13,13 +13,21 @@ require('laravel-elixir-vue-2');
  |
  */
 
+elixir.config.sourcemaps = false;
+
 elixir(mix => {
 	//mix.sass('app.scss')
 	//	.webpack('app.js');
 	
-	mix.copy('node_modules/handsontable/dist/handsontable.full.js', 'public/js/')
-		.copy('node_modules/handsontable/dist/handsontable.full.css', 'public/css/')
-		.copy('node_modules/handsontable/plugins/bootstrap/handsontable.bootstrap.css', 'public/css/')
-		.copy('node_modules/papaparse/papaparse.js', 'public/js/')
-		.copy('node_modules/bootstrap-validator/dist/validator.js', 'public/js/');
+	mix
+		.sass('font-awesome.scss')
+		.copy('bower_components/jquery/dist/jquery.js', 'public/js/')
+		.sass('bootstrap.scss')
+		.sass('bootstrap-theme.scss')
+		.copy('bower_components/bootstrap-sass/assets/javascripts/bootstrap.js', 'public/js/')
+		.copy('bower_components/bootstrap-validator/dist/validator.js', 'public/js/')
+		.copy('bower_components/handsontable/dist/handsontable.full.js', 'public/js/')
+		.copy('bower_components/handsontable/dist/handsontable.full.css', 'public/css/')
+		.copy('bower_components/handsontable/plugins/bootstrap/handsontable.bootstrap.css', 'public/css/')
+		.copy('bower_components/papaparse/papaparse.js', 'public/js/');
 });
