@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Validator;
-use App\{Dictionary, User};
-use App\Observers\ModelCategoryCreator;
+use App\{Dictionary, User, Revision};
+use App\Observers\{ModelCategoryCreator, UserInfomationCacheUpdater};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         
         Dictionary::observe(ModelCategoryCreator::class);
         User::observe(ModelCategoryCreator::class);
+        Revision::observe(UserInfomationCacheUpdater::class);
     }
 
     /**

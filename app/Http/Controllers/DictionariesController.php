@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\{ExternalAccount, Dictionary, Revision, File as FileModel, Tag};
-use App\Http\Requests\ModifyDictionaryRequest;
+use App\Http\Requests\{IndexDictionariesRequest, ModifyDictionaryRequest};
 use Auth;
 use File;
 use Storage;
@@ -61,12 +61,15 @@ class DictionariesController extends Controller implements LoggerInterface
     /**
      * 辞書の一覧を表示します。
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\IndexDictionariesRequest $request
      * @return \Illuminate\View\View
      */
-    public function index(Request $request): View
+    public function index(IndexDictionariesRequest $request): View
     {
-        return view('dictionary.index')->with('dictionaries', Dictionary::with('revision')->get());
+        return view('dictionary.index')->with(
+            'dictionaries',
+            Dictionary::sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'))
+        );
     }
     
     /**

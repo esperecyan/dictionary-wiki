@@ -12,16 +12,14 @@
     <table class="panel-body table">
         <thead>
             <tr>
-                <th>{{ _('ユーザー名') }}</th>
+                <th>@sortablelink('user-name', _('ユーザー名'))</th>
                 <th>{{ _('外部アカウント') }}</th>
-                <th class="text-right">{{ _('編集数') }}</th>
-                <th>{{ _('最終辞書更新日時') }}</th>
+                <th class="text-right">@sortablelink('revision_count', _('編集数'))</th>
+                <th>@sortablelink('revision_created_at', _('最終辞書更新日時'))</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($users->sortByDesc(function ($user) {
-                return count($user->revisions);
-            }) as $shownUser)
+            @foreach($users as $shownUser)
                 <tr>
                     <th>{{ show_user($shownUser) }}</th>
                     <td>
@@ -34,13 +32,15 @@
                                 </i>@endif<span class="text-hide">{{ $provider }}</span></a>
                         @endforeach
                     </td>
-                    <td class="text-right">{{ count($shownUser->revisions) }}</td>
-                    <td>@if ($shownUser->revisions->first())
-                        {!! show_time($shownUser->revisions->first()->created_at) !!}
+                    <td class="text-right">{{ $shownUser->revision_count }}</td>
+                    <td>@if ($shownUser->revision_created_at)
+                        {{ show_time($shownUser->revision_created_at) }}
                     @endif</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
+{{ $users->links() }}
 @endsection

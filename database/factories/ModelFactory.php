@@ -50,6 +50,7 @@ $factory->define(App\Dictionary::class, function (Faker\Generator $faker) {
         'summary' => $metadata['@summary']['lml'] ?? null,
         'regard' => $metadata['@regard'] ?? null,
         'latest' => $dictionary,
+        'updated_at' => $faker->dateTime('now', config('timezone')),
         'deleted_at' => $faker->optional()->dateTime('now', config('timezone')),
     ];
 });

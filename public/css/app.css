@@ -70,6 +70,14 @@ dd.btn-group ~ dd.btn-group > .btn:last-of-type {
 	cursor: default;
 }
 
+/*------------------------------------
+	ページャーの位置
+*/
+.pagination {
+	display: flex;
+	justify-content: center;
+}
+
 /*====================================
 	Bootstrapの修正
 */

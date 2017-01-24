@@ -172,6 +172,7 @@ return array_merge_recursive([
         Barryvdh\Debugbar\ServiceProvider::class,
         Riari\Forum\ForumServiceProvider::class,
         Riari\Forum\Frontend\ForumFrontendServiceProvider::class,
+        Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
 
         /*
          * Application Service Providers...

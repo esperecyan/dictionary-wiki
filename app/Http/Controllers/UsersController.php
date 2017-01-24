@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Http\Requests\IndexUsersRequest;
 use Illuminate\{Http\Request, View\View};
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -11,16 +12,15 @@ class UsersController extends Controller
     /**
      * ユーザーの一覧を表示します。
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\IndexUsersRequest $request
      * @return \Illuminate\View\View
      */
-    public function index(Request $request): View
+    public function index(IndexUsersRequest $request): View
     {
         return view('user.index')->with(
             'users',
-            User::with(['externalAccounts', 'revisions' => function (HasMany $query): void {
-                $query->orderBy('created_at', 'DESC');
-            }])->get()
+            User::with('externalAccounts')
+                ->sortable(['revision_count' => 'desc'])->paginate()->appends($request->except('page'))
         );
     }
     

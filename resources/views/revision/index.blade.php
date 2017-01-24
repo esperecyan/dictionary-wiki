@@ -39,6 +39,11 @@
 {{ Form::close() }}
 @endsection
 
+@section('content')
+    @parent
+    {{ $revisions->links() }}
+@endsection
+
 @push('scripts')
 <script src="{{ asset('js/polyfills.es') }}"></script>
 <script src="{{ asset('js/dictionary-revisions.es') }}"></script>

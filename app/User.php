@@ -8,11 +8,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\{HasMany, BelongsTo};
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, HasForumCategory;
+    use Notifiable, SoftDeletes, HasForumCategory, Sortable;
     
     /** プロフィールの最大文字数。
      *
@@ -62,7 +63,12 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $dates = ['last_revision_created', 'deleted_at'];
+    protected $dates = ['revision_created_at', 'created_at', 'updated_at', 'deleted_at'];
+
+    /**
+     * @inheritDoc
+     */
+    protected $perPage = 50;
     
     /**
      * HTTP(S)スキームをもつ絶対URLであれば真を返します。
@@ -126,6 +132,16 @@ class User extends Authenticatable
     public function nameProvider(): BelongsTo
     {
         return $this->belongsTo(ExternalAccount::class, 'name_provider_id');
+    }
+    
+    /**
+     * kyslik/column-sortable用の nameProvider() メソッドの別名。
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->nameProvider();
     }
     
     /**

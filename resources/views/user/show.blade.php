@@ -4,7 +4,7 @@ use Illuminate\Support\HtmlString;
 use App\ExternalAccount;
 
 $shownUser->load('externalAccounts');
-$revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 'DESC')->getResults();
+$revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 'DESC')->get();
 ?>
 @extends('layouts.app')
 
@@ -45,7 +45,7 @@ $revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 
                 {!! (new Filter())->filter(Markdown::convertToHtml($shownUser->profile)) !!}
             @endif </dd>
         <dt>編集数</dt>
-            <dd>{{ count($revisions) }}</dd>
+            <dd>{{ $shownUser->revision_count }}</dd>
         <dt>編集一覧</dt>
             <dd>
                 <table class="table">

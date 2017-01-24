@@ -22,7 +22,8 @@ class RevisionsController extends Controller
     {
         return view('revision.index')->with([
             'dictionary' => $dictionary,
-            'revisions' => $dictionary->revisions()->with('user.externalAccounts')->latest()->get(),
+            'revisions' => $dictionary->revisions()->with('user.externalAccounts')->latest()
+                ->paginate()->appends($request->except('page')),
         ]);
     }
     

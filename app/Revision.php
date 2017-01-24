@@ -61,6 +61,18 @@ class Revision extends Model
     ];
     
     /**
+     * updated_at列を更新するリレーション。
+     *
+     * @var string[]
+     */
+    protected $touches = ['dictionary'];
+
+    /**
+     * @inheritDoc
+     */
+    protected $perPage = 50;
+    
+    /**
      * 2つの二次元配列を比較し、差分情報を含む二次元配列を返します。
      *
      * 最初の配列はヘッダとして扱います。

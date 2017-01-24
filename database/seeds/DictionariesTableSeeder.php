@@ -18,17 +18,22 @@ class DictionariesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Dictionary::class, static::DATA_LENGTH)->create()->each(function (App\Dictionary $dictionary) {
-            $faker = Faker\Factory::create();
-            
-            $collection = factory(App\Revision::class, $faker->numberBetween(1, 5))->make();
-            $dictionary->revisions()->saveMany(
-                ($collection instanceof Collection ? $collection : collect([$collection]))->each(
-                    function (App\Revision $revision) use ($faker) {
-                        $revision->user_id = $faker->randomElement(App\User::pluck('id')->toArray());
-                    }
-                )
-            );
-        });
+        factory(App\Dictionary::class, static::DATA_LENGTH)->create(['deleted_at' => null])
+            ->each(function (App\Dictionary $dictionary) {
+                $faker = Faker\Factory::create();
+
+                $collection = factory(App\Revision::class, $faker->numberBetween(1, 5))->make();
+                $dictionary->revisions()->saveMany(
+                    ($collection instanceof Collection ? $collection : collect([$collection]))->each(
+                        function (App\Revision $revision) use ($faker) {
+                            $revision->user_id = $faker->randomElement(App\User::pluck('id')->toArray());
+                        }
+                    )
+                );
+                    
+                $dictionary->deleted_at = $faker->optional()->dateTime('now', config('timezone'));
+                $dictionary->updated_at = $dictionary->revision->created_at;
+                $dictionary->save();
+            });
     }
 }

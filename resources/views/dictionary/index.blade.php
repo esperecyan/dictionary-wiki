@@ -12,27 +12,27 @@ use App\Dictionary;
         <thead>
             <tr>
                 <th>{{ _('カテゴリ') }}</th>
-                <th>{{ _('辞書名') }}</th>
-                <th class="text-right">{{ _('語数') }}</th>
-                <th>{{ _('更新日時') }}</th>
+                <th>@sortablelink('title', _('辞書名'))</th>
+                <th class="text-right">@sortablelink('words', _('語数'))</th>
+                <th>@sortablelink('updated_at', _('更新日時'))</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach($dictionaries->sortByDesc(function (Dictionary $dictionary) {
-                return $dictionary->revision->created_at;
-            }) as $dictionary)
+            @foreach($dictionaries as $dictionary)
                 <tr>
                     <td>{{ $dictionary->categoryName }}</td>
                     <th><bdi>{{
                         link_to_route('dictionaries.show', $dictionary->title, ['dictionary' => $dictionary->id])
                     }}</bdi></th>
                     <td class="text-right">{{ $dictionary->words }}</td>
-                    <td>{!! show_time($dictionary->revision->created_at) !!}</td>
+                    <td>{!! show_time($dictionary->updated_at) !!}</td>
                     <td>{{ Html::showDictionaryWarnings($dictionary) }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
+{{ $dictionaries->links() }}
 @endsection

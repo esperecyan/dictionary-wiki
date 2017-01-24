@@ -7,11 +7,12 @@ use Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasMany, HasOne, BelongsToMany};
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kyslik\ColumnSortable\Sortable;
 use FilesystemIterator;
 
 class Dictionary extends Model
 {
-    use SoftDeletes, HasForumCategory;
+    use SoftDeletes, HasForumCategory, Sortable;
     
     /**
      * 言語タグの最大文字数。
@@ -53,7 +54,12 @@ class Dictionary extends Model
      *
      * @var string[]
      */
-    protected $dates = ['created_at', 'deleted_at'];
+    protected $dates = ['updated_at', 'deleted_at'];
+
+    /**
+     * @inheritDoc
+     */
+    protected $perPage = 50;
 
     /**
      * 更新するリレーション。
