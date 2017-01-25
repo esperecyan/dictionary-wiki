@@ -55,7 +55,7 @@ class DictionariesController extends Controller implements LoggerInterface
     
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index', 'show', 'words']]);
     }
     
     /**
@@ -119,12 +119,20 @@ class DictionariesController extends Controller implements LoggerInterface
     {
         return $request->exists('type')
             ? $this->get($dictionary, $request)
-            : view('dictionary.show')->with([
-                'dictionary' => $dictionary,
-                'records' => $dictionary->revision->records,
-                'revisions' => $dictionary->revisions()->with('user.externalAccounts')->orderBy('created_at', 'DESC')
-                    ->getResults(),
-            ]);
+            : view('dictionary.show')->with('dictionary', $dictionary);
+    }
+    
+    /**
+     * 辞書のお題一覧を表示します。
+     *
+     * @param \App\Dictionary $dictionary
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
+    public function words(Dictionary $dictionary, Request $request): View
+    {
+        return view('dictionary.words')
+            ->with(['dictionary' => $dictionary, 'records' => $dictionary->revision->records]);
     }
     
     /**

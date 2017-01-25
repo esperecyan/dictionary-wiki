@@ -1,6 +1,12 @@
 {{-- $thread is passed as NULL to the master layout view to prevent it from showing in the breadcrumbs --}}
 @extends ('forum::master', ['thread' => null])
 
+@if ($category->children->isEmpty())
+    @push('metas')
+    <meta name="robots" content="noindex" />
+    @endpush
+@endif
+
 @section ('content')
     @@parent
 

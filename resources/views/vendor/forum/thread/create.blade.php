@@ -1,5 +1,9 @@
 @extends ('forum::master', ['breadcrumb_other' => trans('forum::threads.new_thread')])
 
+@push('metas')
+    <meta name="robots" content="noindex" />
+@endpush
+
 @section ('content')
     @@parent
 

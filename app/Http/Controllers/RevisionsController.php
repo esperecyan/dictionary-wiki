@@ -4,12 +4,28 @@ namespace App\Http\Controllers;
 
 use App\{Dictionary, Revision};
 use App\Http\Requests\DiffRevisionRequest;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 class RevisionsController extends Controller
 {
+    /**
+     * 更新履歴を表示します。
+     *
+     * @param  \App\Dictionary  $dictionary
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\View\View
+     */
+    public function index(Dictionary $dictionary, Request $request): View
+    {
+        return view('revision.index')->with([
+            'dictionary' => $dictionary,
+            'revisions' => $dictionary->revisions()->with('user.externalAccounts')->latest()->get(),
+        ]);
+    }
+    
     /**
      * 更新後の辞書の内容を表示します。
      *
@@ -71,7 +87,7 @@ class RevisionsController extends Controller
             ),
         ];
         
-        return view('revisions.diff')->with([
+        return view('revision.diff')->with([
             'dictionary' => $dictionary,
             'revisions' => $revisions,
             'tags' => array_flatten($tags) ? $tags : null,

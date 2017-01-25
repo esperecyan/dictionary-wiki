@@ -3,10 +3,7 @@ use App\Dictionary;
 use bantu\IniGetWrapper\IniGetWrapper;
 use ScriptFUSION\Byte\ByteFormatter;
 ?>
-
 @extends('dictionary.modify')
-
-@section('title', e(_('辞書の新規作成')))
 
 @section('fieldsets')
     <fieldset class="panel panel-default" id="upload-fieldset">

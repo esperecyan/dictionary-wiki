@@ -22,8 +22,7 @@ $revisions = $shownUser->revisions()->with('dictionary')->orderBy('created_at', 
         <li>{{ link_to_route(
             'users.threads.index',
             new HtmlString(e(_('コメント欄')) . ($threadsCount > 0 ? " <span class=\"badge\">$threadsCount</span>" : '')),
-            ['model' => $shownUser->id],
-            $threadsCount === 0 ? ['rel' => 'nofollow'] : []
+            ['model' => $shownUser->id]
         ) }}</li>
     </ul>
 </nav>

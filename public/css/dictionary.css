@@ -1,13 +1,9 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 
-td img,
-td audio,
-td video {
-	max-width: 10em;
-	max-height: 10em;
-}
-
 /*====================================
+	辞書の概要 (ダウンロード)
+*/
+/*------------------------------------
 	クリップボードにコピー
 */
 #copy-buttons ul {

@@ -1,17 +1,6 @@
-<?php
-use App\Dictionary;
-use Illuminate\Support\HtmlString;
-?>
-
 @extends('dictionary.modify')
 
-@section('title', e(sprintf(_('「%s」の編集'), $dictionary->title)))
-@section('title-with-link', sprintf(e(_('%sの編集')), link_to_route(
-    'dictionaries.show',
-    new HtmlString('<bdi>' . e($dictionary->title) . '</bdi>'),
-    [$dictionary],
-    ['class' => 'text-primary']
-)))
+@section('title')@@parent — {{ _('編集') }}@endsection
 
 @section('commons')
     @@parent

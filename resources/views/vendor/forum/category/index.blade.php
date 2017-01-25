@@ -1,6 +1,12 @@
 {{-- $category is passed as NULL to the master layout view to prevent it from showing in the breadcrumbs --}}
 @extends ('forum::master', ['category' => null])
 
+@if ($postsCount === 0)
+    @push('metas')
+        <meta name="robots" content="noindex, nofollow" />
+    @endpush
+@endif
+
 @section ('content')
     @@parent
 

@@ -4,9 +4,9 @@ use App\ExternalAccount;
 
 @extends('layouts.app')
 
-@section('metas')
+@push('metas')
     <meta name="robots" content="noindex" />
-@endsection
+@endpush
 
 @push('styles')
     <link href="{{ asset('css/external-accounts.css') }}" rel="stylesheet" />

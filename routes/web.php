@@ -38,6 +38,7 @@ Route::post('users/external-accounts', 'Auth\ExternalAccountsController@requestA
 Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
 
 // 辞書
+Route::get('dictionaries/{dictionary}/words', 'DictionariesController@words')->name('dictionaries.words');
 Route::resource('dictionaries', 'DictionariesController');
 
 // ファイル
@@ -47,7 +48,7 @@ Route::get('dictionaries/{dictionary}/files/{file}', ['as' => 'dictionaries.file
 // 更新履歴
 Route::get('dictionaries/{dictionary}/revisions/diff', 'RevisionsController@diff')
     ->name('dictionaries.revisions.diff');
-Route::resource('dictionaries.revisions', 'RevisionsController', ['only' => 'show']);
+Route::resource('dictionaries.revisions', 'RevisionsController', ['only' => ['index', 'show']]);
 
 // コメント欄
 Route::group(['namespace' => 'Forum', 'middleware' => App\Http\Middleware\ForumImplicitBinding::class], function () {
