@@ -1,12 +1,15 @@
 /*!
 	riari/laravel-forum-frontend のBladeテンプレートから分離したスタイル
+
+	body { padding: 30px 0; } → body { padding-bottom: 30px; }
+
 	@license https://github.com/Riari/laravel-forum-frontend/blob/1.0/LICENSE MIT License
 	@copyright Copyright (c) 2015 Rick Mann
 */
 @namespace url("http://www.w3.org/1999/xhtml");
 
 body {
-	padding: 30px 0;
+	padding-bottom: 30px;
 }
 
 textarea {

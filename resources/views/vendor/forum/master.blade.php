@@ -1,39 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    <title>
-        @if (isset($thread))
-            {{ $thread->title }} -
-        @endif
-        @if (isset($category))
-            {{ $category->title }} -
-        @endif
-        {{ trans('forum::general.home_title') }}
-    </title>
+@section('title')
+    @if (isset($thread))
+        {{ $thread->title }} -
+    @endif
+    @if (isset($category))
+        {{ $category->title }} -
+    @endif
+    {{ trans('forum::general.home_title') }}
+@endsection
 
-    <!-- jQuery -->
-    <script src="{{ asset('js/jquery.js') }}"></script>
-
-    <!-- Bootstrap -->
-    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/bootstrap-theme.css') }}" rel="stylesheet" />
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-
+@push('styles')
     <link href="{{ asset('css/forum-master.css') }}" rel="stylesheet" />
-</head>
-<body>
-    <div class="container">
-        @include ('forum::partials.breadcrumbs')
-        @include ('forum::partials.alerts')
+@endpush
 
-        @yield('content')
-    </div>
+@section('content')
+    @include ('forum::partials.breadcrumbs')
+    @include ('forum::partials.alerts')
+@endsection
 
+@push('scripts')
     <script src="{{ asset('js/forum-master.js') }}"></script>
-
-    @yield('footer')
-</body>
-</html>
+@endpush

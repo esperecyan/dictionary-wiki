@@ -1,6 +1,8 @@
 @extends ('forum::master', ['breadcrumb_other' => trans('forum::threads.new_thread')])
 
 @section ('content')
+    @@parent
+
     <div id="create-thread">
         <h2>{{ trans('forum::threads.new_thread') }} ({{ $category->title }})</h2>
 

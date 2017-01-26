@@ -1,6 +1,8 @@
 @extends ('forum::master', ['breadcrumb_other' => trans('forum::posts.edit')])
 
 @section ('content')
+    @@parent
+
     <div id="edit-post">
         <h2>{{ trans('forum::posts.edit') }} ({{ $thread->title }})</h2>
 

@@ -2,6 +2,8 @@
 @extends ('forum::master', ['thread' => null])
 
 @section ('content')
+    @@parent
+
     <div id="category">
         @can ('createCategories')
             @include ('forum::category.partials.form-create')

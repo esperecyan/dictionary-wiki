@@ -1,6 +1,8 @@
 @extends ('forum::master')
 
 @section ('content')
+    @@parent
+
     <div id="thread">
         <h2>
             @if ($thread->trashed())
