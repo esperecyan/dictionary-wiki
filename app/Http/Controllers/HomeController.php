@@ -120,7 +120,7 @@ class HomeController extends Controller
     {
         $rules = [
             'public' => ['array'],
-            'profile' => 'markdown:App\\User::PROFILE_ALLOWED',
+            'profile' => ['nullable', 'markdown:App\\User::PROFILE_ALLOWED'],
         ];
         
         foreach (['name', 'avatar', 'email'] as $provided) {

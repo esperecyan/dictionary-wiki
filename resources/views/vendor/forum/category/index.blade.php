@@ -8,7 +8,7 @@
 @endif
 
 @section ('content')
-    @@parent
+    @parent
 
     @can ('createCategories')
         @include ('forum::category.partials.form-create')

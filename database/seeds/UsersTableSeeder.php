@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\{Seeder, Eloquent\Collection};
+use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {
@@ -25,10 +25,8 @@ class UsersTableSeeder extends Seeder
                 $faker->numberBetween(1, count(config('auth.services')))
             );
             
-            $collection = factory(App\ExternalAccount::class, count($services))->make();
-            
             $user->externalAccounts()->saveMany(
-                ($collection instanceof Collection ? $collection : collect([$collection]))->each(
+                factory(App\ExternalAccount::class, count($services))->make()->each(
                     function (App\ExternalAccount $externalAccount) use ($user, &$services) {
                         $externalAccount->user_id = $user->id;
                         $externalAccount->provider = array_shift($services);

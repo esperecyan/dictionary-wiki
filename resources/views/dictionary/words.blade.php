@@ -1,6 +1,6 @@
 @extends('dictionary.base')
 
-@section('title')@@parent — {{ _('お題一覧') }}@endsection
+@section('title')@parent — {{ _('お題一覧') }}@endsection
 
 @push('styles')
     <link href="{{ asset('css/dictionary-words.css') }}" rel="stylesheet" />

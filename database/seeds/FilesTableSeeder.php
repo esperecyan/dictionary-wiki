@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\{Seeder, Eloquent\Collection};
+use Illuminate\Database\Seeder;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 
 class FilesTableSeeder extends Seeder
@@ -39,9 +39,8 @@ class FilesTableSeeder extends Seeder
                 
                 $faker->unique(true);
                 $revisionIds = $dictionary->revisions()->pluck('id')->toArray();
-                $collection = factory(App\File::class, $fileCount)->make();
                 $dictionary->files()->saveMany(
-                    ($collection instanceof Collection ? $collection : collect([$collection]))
+                    factory(App\File::class, $fileCount)->make()
                         ->each(function (App\File $file) use ($faker, $files, $directory, $revisionIds) {
                             $fakeFile = $faker->randomElement($files);
                             $file->name = "{$faker->unique()->word}." . App\File::EXTENSIONS[$fakeFile['type']];

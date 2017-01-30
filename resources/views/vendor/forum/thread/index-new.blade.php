@@ -1,7 +1,7 @@
 @extends ('forum::master', ['breadcrumb_other' => trans('forum::threads.new_updated')])
 
 @section ('content')
-    @@parent
+    @parent
 
   <div id="new-posts">
       <h2>{{ trans('forum::threads.new_updated') }}</h2>

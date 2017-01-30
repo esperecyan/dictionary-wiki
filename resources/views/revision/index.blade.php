@@ -1,6 +1,6 @@
 @extends('dictionary.base')
 
-@section('title')@@parent — {{ _('更新履歴') }}@endsection
+@section('title')@parent — {{ _('更新履歴') }}@endsection
 
 @section('panel-body')
 {{ Form::open(['method' => 'GET', 'route' => ['dictionaries.revisions.diff', $dictionary], 'class' => 'panel-body']) }}

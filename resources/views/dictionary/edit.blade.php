@@ -1,9 +1,9 @@
 @extends('dictionary.modify')
 
-@section('title')@@parent — {{ _('編集') }}@endsection
+@section('title')@parent — {{ _('編集') }}@endsection
 
 @section('commons')
-    @@parent
+    @parent
     @include('dictionary.csv')
     @if (count($dictionary->files) > 0)
     <div class="form-group{{ $errors->has('deleted-file-names[]') ? ' has-error' : '' }}">

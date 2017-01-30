@@ -39,7 +39,7 @@ class HtmlServiceProvider extends BaseHtmlServiceProvider
                 $app['html'],
                 $app['url'],
                 $app['view'],
-                $app['session.store']->getToken()
+                $app['session.store']->token()
             ) extends FormBuilder {
                 /**
                  * @inheritDoc

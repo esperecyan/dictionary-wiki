@@ -5,7 +5,7 @@
 @endpush
 
 @section ('content')
-    @@parent
+    @parent
 
     <div id="create-thread">
         <h2>{{ trans('forum::threads.new_thread') }} ({{ $category->title }})</h2>

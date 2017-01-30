@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
-use Illuminate\Http\Exception\PostTooLargeException;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -87,9 +87,12 @@ class Handler extends ExceptionHandler
     protected function convertExceptionToResponse(Exception $e): Response
     {
         $response = parent::convertExceptionToResponse($e);
-        
         $doc = new DOMDocument();
+        
+        $useErrors = libxml_use_internal_errors(true);
         $doc->loadHTML($response->getContent());
+        libxml_use_internal_errors($useErrors);
+        
         $link = $doc->createElement('link');
         $link->setAttribute('href', asset('css/symfony-debug-exception.css'));
         $link->setAttribute('rel', 'stylesheet');

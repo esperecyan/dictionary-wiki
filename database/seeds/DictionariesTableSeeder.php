@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\{Seeder, Eloquent\Collection};
+use Illuminate\Database\Seeder;
 
 class DictionariesTableSeeder extends Seeder
 {
@@ -22,9 +22,8 @@ class DictionariesTableSeeder extends Seeder
             ->each(function (App\Dictionary $dictionary) {
                 $faker = Faker\Factory::create();
 
-                $collection = factory(App\Revision::class, $faker->numberBetween(1, 5))->make();
                 $dictionary->revisions()->saveMany(
-                    ($collection instanceof Collection ? $collection : collect([$collection]))->each(
+                    factory(App\Revision::class, $faker->numberBetween(1, 5))->make()->each(
                         function (App\Revision $revision) use ($faker) {
                             $revision->user_id = $faker->randomElement(App\User::pluck('id')->toArray());
                         }

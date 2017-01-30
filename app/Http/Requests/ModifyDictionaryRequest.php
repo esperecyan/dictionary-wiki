@@ -78,6 +78,7 @@ class ModifyDictionaryRequest extends FormRequest
     
     /**
      * 指定したキーのバリデーションルールに、必須であること (required) を追加します。
+     * 指定されなかったキーで文字列 (string) の場合、nullを許容すること (nullable) を追加します。
      *
      * @prama (string|string[])[] $rules
      * @param string[] $keys
@@ -85,7 +86,14 @@ class ModifyDictionaryRequest extends FormRequest
      */
     public function requireRules(array $rules, array $keys): array
     {
-        return array_merge_recursive($rules, array_fill_keys($keys, 'required'));
+        foreach ($rules as $key => &$rule) {
+            if (in_array($key, $keys)) {
+                array_push($rule, 'required');
+            } elseif (in_array('string', $rule)) {
+                array_push($rule, 'nullable');
+            }
+        }
+        return $rules;
     }
     
     /**

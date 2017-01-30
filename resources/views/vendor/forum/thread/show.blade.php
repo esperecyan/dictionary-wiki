@@ -1,7 +1,7 @@
 @extends ('forum::master')
 
 @section ('content')
-    @@parent
+    @parent
 
     <div id="thread">
         <h2>

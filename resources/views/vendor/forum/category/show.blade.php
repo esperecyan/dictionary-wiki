@@ -8,7 +8,7 @@
 @endif
 
 @section ('content')
-    @@parent
+    @parent
 
     <div id="category">
         @can ('createCategories')
