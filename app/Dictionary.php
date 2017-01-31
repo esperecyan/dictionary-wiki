@@ -4,6 +4,7 @@ namespace App;
 
 use esperecyan\dictionary_php\Dictionary as DictionaryRecord;
 use Storage;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasMany, HasOne, BelongsToMany};
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use FilesystemIterator;
 
 class Dictionary extends Model
 {
-    use SoftDeletes, HasForumCategory, Sortable;
+    use SoftDeletes, HasForumCategory, Sortable, Searchable;
     
     /**
      * 言語タグの最大文字数。
@@ -72,6 +73,17 @@ class Dictionary extends Model
     {
         parent::__construct($attributes);
         $this->locale = _('ja');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function toSearchableArray()
+    {
+        return array_except([
+            'tags' => $this->tags->pluck('name')->toArray(),
+            'recordTexts' => array_pluck($this->latest->getWords(), 'text.0'),
+        ] + $this->attributesToArray(), ['latest']);
     }
     
     /**

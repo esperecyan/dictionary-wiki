@@ -68,7 +68,11 @@ class DictionariesController extends Controller implements LoggerInterface
     {
         return view('dictionary.index')->with(
             'dictionaries',
-            Dictionary::sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'))
+            ($request->has('search')
+                // Support for Laravel Scout · Issue #48 · Kyslik/column-sortable
+                // <https://github.com/Kyslik/column-sortable/issues/48#issuecomment-270252558>
+                ? Dictionary::whereIn('id', Dictionary::search($request->search)->get()->pluck('id'))
+                : new Dictionary())->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'))
         );
     }
     
@@ -102,7 +106,9 @@ class DictionariesController extends Controller implements LoggerInterface
             $parsedDictionary = null;
         }
         
-        $dictionary->save();
+        Dictionary::withoutSyncingToSearch(function () use ($dictionary) {
+            $dictionary->save();
+        });
         $this->transactionAndLock($dictionary, function () use ($dictionary, $request, $parsedDictionary) {
             $dictionary->category = $request->input('category');
             $dictionary->locale = $request->input('locale');
@@ -403,8 +409,8 @@ class DictionariesController extends Controller implements LoggerInterface
         }
         $dictionary->words = count($parsedDictionary->getWords());
         
-        $dictionary->save();
         $revision->save();
+        $dictionary->save();
     }
     
     /**

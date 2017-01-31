@@ -69,6 +69,18 @@ use Illuminate\Support\HtmlString;
                         </li>
                     @endif
                 </ul>
+
+                {{ Form::open([
+                    'method' => 'GET',
+                    'route' => 'dictionaries.index',
+                    'class' => 'navbar-form navbar-right',
+                    'role' => 'search',
+                    'title' => _('辞書名、タグ、概要、および各お題の正しい表記の答え (textフィールド値) から検索します。'),
+                ]) }}
+                    <input type="search" name="search" class="form-control" placeholder="{{ _('辞書を検索') }}"
+                        value="{{ Route::currentRouteName() === 'dictionaries.index' ? request('search') : '' }}">
+                    <button class="btn btn-default fa fa-search"><span class="text-hide">検索</span></button>
+                {{ Form::close() }}
             </div>
         </div>
     </nav>

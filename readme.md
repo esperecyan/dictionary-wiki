@@ -27,7 +27,8 @@ wikiの作成
 1. 「storage」以下と「bootstrap/cache」以下にApacheから書き込めるようにします。  
    `chmod --recursive g+w {storage,bootstrap/cache}`  
    `sudo chgrp --recursive apache {storage,bootstrap/cache}`
-1. 「.env」ファイルに、データベース設定、OAuthログイン用のクライアントIDとクライアントシークレットを記述します。
+1. 「.env」ファイルに、データベース設定、辞書検索用に[Algolia]の Application ID と Admin API Key、
+	OAuthログイン用のクライアントIDとクライアントシークレットを記述します。
    実運用環境であれば、キャッシュの作成に利用する `APP_URL` にwikiトップページのURLを末尾のスラッシュを抜いて記述します。
 1. キャッシュを生成し (実運用環境)、マイグレーションを実行します。  
    * 開発用: `composer run-script --dev post-install-cmd`
@@ -35,6 +36,15 @@ wikiの作成
 1. 「.apache.conf」ファイルを、wikiを設置する `<VirstualHost>` セクション内で `Include` します。
 1. Apacheを再起動します。  
    `sudo apachectl graceful`
+
+Algolia の Searchable Attributes (Rankingタブ) では、以下を設定しておきます。
+
+1. title
+1. tags
+1. summary
+1. recordTexts
+
+[Algolia]: https://www.algolia.com/ "Hosted Search API that delivers instant and relevant results from the first keystroke"
 
 ### 更新 (実運用環境)
 `git fetch`  

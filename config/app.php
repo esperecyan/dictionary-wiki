@@ -167,6 +167,7 @@ return array_merge_recursive([
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
         //Collective\Html\HtmlServiceProvider::class,
         App\Providers\HtmlServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
