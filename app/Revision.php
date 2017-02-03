@@ -2,20 +2,15 @@
 
 namespace App;
 
-use Markdown;
+use Html;
 use Illuminate\Support\HtmlString;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use esperecyan\html_filter\Filter;
-use League\HTMLToMarkdown\HtmlConverter;
-use Masterminds\HTML5;
 use coopy_PhpTableView;
 use coopy_Coopy;
 use coopy_TableDiff;
 use coopy_CompareFlags;
 use SplTempFileObject;
-use DOMElement;
-use DOMText;
 
 class Revision extends Model
 {
@@ -194,28 +189,7 @@ class Revision extends Model
                         if ($field === '') {
                             $record[] = null;
                         } elseif (in_array($fieldNames[$i], static::MARKEDUP_FIELD_NAMES)) {
-                            $record[] = new HtmlString((new Filter(
-                                null,
-                                ['before' => function (DOMElement $body) {
-                                    foreach (array_merge(...array_map(function (string $elementName) use ($body) {
-                                        return iterator_to_array($body->getElementsByTagName($elementName));
-                                    }, ['img', 'audio', 'video'])) as $embededContent) {
-                                        $src = $embededContent->getAttribute('src');
-                                        if (str_contains($src, '/')) {
-                                            $embededContent->parentNode->replaceChild(
-                                                new DOMText((new HtmlConverter())->convert((new HTML5())
-                                                    ->saveHTML($embededContent))),
-                                                $embededContent
-                                            );
-                                        } else {
-                                            $embededContent->setAttribute('src', route('dictionaries.files.show', [
-                                                'dictionary' => $this->getRelationValue('dictionary')->id,
-                                                'file' => $src,
-                                            ]));
-                                        }
-                                    }
-                                }]
-                            ))->filter(Markdown::convertToHtml($field)));
+                            $record[] = Html::convertField($field);
                         } elseif (in_array($fieldNames[$i], ['image', 'audio', 'video']) && !str_contains($field, '/')) {
                             $fileURL = route(
                                 'dictionaries.files.show',

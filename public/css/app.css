@@ -35,26 +35,6 @@ dl.badge dt {
 }
 
 /*------------------------------------
-	ボタン風ダウンロードリンク
-*/
-dd.btn-group {
-	padding-left: 0;
-	display: flex;
-}
-dd.btn-group:first-of-type:not(:only-of-type) > .btn:first-of-type {
-	border-bottom-left-radius: 0;
-}
-dd.btn-group ~ dd.btn-group > .btn {
-	border-top: none;
-}
-dd.btn-group ~ dd.btn-group > .btn:first-of-type {
-	border-top-left-radius: 0;
-}
-dd.btn-group ~ dd.btn-group > .btn:last-of-type {
-	border-top-right-radius: 0;
-}
-
-/*------------------------------------
 	お題の表示
 */
 .many-columns {
@@ -171,10 +151,6 @@ div.including-multiple-values,
 .including-multiple-values dt,
 .including-multiple-values dd {
 	margin-right: 1em;
-}
-.including-multiple-values.including-labels dt,
-.including-multiple-values.including-labels dd {
-	margin-right: 0.2em;
 }
 
 /*====================================

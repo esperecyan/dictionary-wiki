@@ -7,6 +7,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\HtmlString;
 use Html;
 use Form;
+use Markdown;
+use esperecyan\html_filter\Filter;
+use League\HTMLToMarkdown\HtmlConverter;
+use Masterminds\HTML5;
+use DOMElement;
+use DOMText;
 
 class MacroServiceProvider extends ServiceProvider
 {
@@ -38,6 +44,30 @@ class MacroServiceProvider extends ServiceProvider
             return new HtmlString(
                 ($html ? '<i class="fa fa-exclamation-triangle"></i>' : '') . $html
             );
+        });
+        
+        Html::macro('convertField', function (string $field): HtmlString {
+            return new HtmlString((new Filter(
+                null,
+                ['before' => function (DOMElement $body): void {
+                    foreach (array_merge(...array_map(function (string $elementName) use ($body) {
+                        return iterator_to_array($body->getElementsByTagName($elementName));
+                    }, ['img', 'audio', 'video'])) as $embededContent) {
+                        $src = $embededContent->getAttribute('src');
+                        if (str_contains($src, '/')) {
+                            $embededContent->parentNode->replaceChild(
+                                new DOMText((new HtmlConverter())->convert((new HTML5())->saveHTML($embededContent))),
+                                $embededContent
+                            );
+                        } else {
+                            $embededContent->setAttribute('src', route(
+                                'dictionaries.files.show',
+                                ['dictionary' => request()->route('dictionary'), 'file' => $src]
+                            ));
+                        }
+                    }
+                }]
+            ))->filter(Markdown::convertToHtml($field)));
         });
     }
 

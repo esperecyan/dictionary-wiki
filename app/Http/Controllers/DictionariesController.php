@@ -402,7 +402,7 @@ class DictionariesController extends Controller implements LoggerInterface
         $dictionary->title = $parsedDictionary->getTitle();
         $metadata = $parsedDictionary->getMetadata();
         if (isset($metadata['@summary'])) {
-            $dictionary->summary = $metadata['@summary'];
+            $dictionary->summary = $metadata['@summary']['lml'];
         }
         if (isset($metadata['@regard'])) {
             $dictionary->regard = $metadata['@regard'];

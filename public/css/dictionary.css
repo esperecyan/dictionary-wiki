@@ -4,6 +4,34 @@
 	辞書の概要 (ダウンロード)
 */
 /*------------------------------------
+	タグ
+*/
+.list-group-item.including-labels > * {
+	margin-right: 0.2em;
+	display: inline;
+}
+
+/*------------------------------------
+	ボタン風ダウンロードリンク
+*/
+div.btn-group {
+	padding-left: 0;
+	display: flex;
+}
+div.btn-group:first-of-type:not(:only-of-type) > .btn:first-of-type {
+	border-bottom-left-radius: 0;
+}
+div.btn-group ~ div.btn-group > .btn {
+	border-top: none;
+}
+div.btn-group ~ div.btn-group > .btn:first-of-type {
+	border-top-left-radius: 0;
+}
+div.btn-group ~ div.btn-group > .btn:last-of-type {
+	border-top-right-radius: 0;
+}
+
+/*------------------------------------
 	クリップボードにコピー
 */
 #copy-buttons ul {
