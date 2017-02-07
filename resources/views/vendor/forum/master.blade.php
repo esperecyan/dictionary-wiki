@@ -10,6 +10,20 @@
     {{ trans('forum::general.home_title') }}
 @endsection
 
+<?php
+$parameters = ['type' => 'atom'];
+if ($dictionary = request()->route('dictionary')) {
+    $parameters['dictionary'] = $dictionary->id;
+} elseif ($user = request()->route('user')) {
+    $parameters['user'] = $user->id;
+}
+
+?>
+@push('metas')
+    <link href="{{ route(explode('.', request()->route()->getName())[0] . '.threads.index', $parameters) }}"
+        rel="alternate" type="application/atom+xml" />
+@endpush
+
 @push('styles')
     <link href="{{ asset('css/forum-master.css') }}" rel="stylesheet" />
 @endpush

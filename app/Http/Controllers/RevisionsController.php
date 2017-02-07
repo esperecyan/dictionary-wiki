@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\{Dictionary, Revision};
 use App\Http\Requests\DiffRevisionRequest;
-use Illuminate\View\View;
+use App;
+use Html;
+use Roumen\Feed\Feed;
+use Illuminate\Support\HtmlString;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
@@ -12,19 +15,77 @@ use Symfony\Component\HttpFoundation\Response as BaseResponse;
 class RevisionsController extends Controller
 {
     /**
+     * フィードをキャッシュする秒数。
+     *
+     * @var int
+     */
+    const FEED_CACHE_LIFETIME = 60;
+    
+    /**
      * 更新履歴を表示します。
      *
      * @param  \App\Dictionary  $dictionary
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\Response
      */
-    public function index(Dictionary $dictionary, Request $request): View
+    public function index(Dictionary $dictionary, Request $request)
     {
-        return view('revision.index')->with([
+        return $request->type === 'atom' ? $this->generateFeed($dictionary, $request) : view('revision.index')->with([
             'dictionary' => $dictionary,
             'revisions' => $dictionary->revisions()->with('user.externalAccounts')->latest()
                 ->paginate()->appends($request->except('page')),
         ]);
+    }
+    
+    /**
+     * フィードを生成します。
+     *
+     * @param  \App\Dictionary  $dictionary
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function generateFeed(Dictionary $dictionary, Request $request): Response
+    {
+        $feed = new Feed();
+        if (App::environment('staging', 'production')) {
+            $feed->setCache(static::FEED_CACHE_LIFETIME, $dictionary->id);
+        }
+        if (!$feed->isCached()) {
+            $revisions = $dictionary->revisions()->with('user.nameProvider')->latest()
+                ->limit((new Revision())->getPerPage())->get();
+            $feed->title = _('辞書まとめwiki') . ' — ' . $dictionary->title . ' — ' . _('更新履歴');
+            $feed->pubdate = $revisions[0]->created_at;
+            $feed->description = isset($dictionary->summary)
+                ? new HtmlString('<div xmlns="http://www.w3.org/1999/xhtml">
+                    <h1></h1>' .
+                    Html::convertField($dictionary->summary)
+                . '</div>')
+                : null;
+            $feed->link = route($request->route()->getName(), ['dictionary' => $dictionary->id, 'type' => 'atom']);
+            $feed->icon = url('favicon.ico');
+            $feed->logo = url('logo.png');
+            $feed->lang = $dictionary->locale;
+
+            foreach ($revisions as $i => $revision) {
+                $feed->setItem([
+                    'id' => 'tag:' . config('feed.taggingEntity') . ":dictionary-wiki:revision-$revision->id",
+                    'title' => $revision->summary,
+                    'author' => $revision->user->name,
+                    'authorURL' => route('users.show', ['user' => $revision->user->id]),
+                    'link' => isset($revisions[$i + 1])
+                        ? route('dictionaries.revisions.diff', ['dictionary' => $dictionary->id])
+                            . "?revisions%5B%5D=$revision->id&revisions%5B%5D={$revisions[$i + 1]->id}"
+                        : $feed->link,
+                    'pubdate' => $revision->created_at,
+                    'description' => null,
+                    'content' => null,
+                    'enclosure' => [],
+                    'category' => null,
+                ]);
+            }
+        }
+
+        return $feed->render('atom');
     }
     
     /**

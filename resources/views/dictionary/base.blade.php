@@ -5,6 +5,13 @@ use Illuminate\Support\HtmlString;
 
 @section('title', e($dictionary->title ?? _('辞書の新規作成')))
 
+@if (isset($dictionary))
+@push('metas')
+    <link href="{{ route('dictionaries.revisions.index', ['dictionary' => $dictionary->id, 'type' => 'atom']) }}"
+        rel="alternate" type="application/atom+xml" />
+@endpush
+@endif
+
 @section('content')
 @if (isset($dictionary))
     <?php $postsCount = $dictionary->forumCategory->threads()->withCount('posts')->get()->sum('posts_count'); ?>
@@ -35,6 +42,10 @@ use Illuminate\Support\HtmlString;
             <span class="label label-primary">{{ $dictionary->categoryName }}</span>
             <bdi>{{ $dictionary->title }}</bdi>
             {{ Html::showDictionaryWarnings($dictionary) }}
+            <a href="{{ route('dictionaries.revisions.index', ['dictionary' => $dictionary->id, 'type' => 'atom']) }}"
+                target="_blank" class="btn btn-default fa fa-feed">
+                <span class="text-hide">フィード</span>
+            </a>
         @else
             {{ _('辞書の新規作成') }}
         @endif

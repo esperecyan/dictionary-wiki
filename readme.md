@@ -30,6 +30,7 @@ wikiの作成
 1. 「.env」ファイルに、データベース設定、辞書検索用に[Algolia]の Application ID と Admin API Key、
 	OAuthログイン用のクライアントIDとクライアントシークレットを記述します。
    実運用環境であれば、キャッシュの作成に利用する `APP_URL` にwikiトップページのURLを末尾のスラッシュを抜いて記述します。
+   また、`FEED_TAGGING_ENTITY` も記述しておきます。
 1. キャッシュを生成し (実運用環境)、マイグレーションを実行します。  
    * 開発用: `composer run-script --dev post-install-cmd`
    * 実運用: `composer run-script --no-dev post-install-cmd`
