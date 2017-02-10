@@ -8,12 +8,13 @@ use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasMany, HasOne, BelongsToMany};
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Collective\Html\Eloquent\FormAccessible;
 use Kyslik\ColumnSortable\Sortable;
 use FilesystemIterator;
 
 class Dictionary extends Model
 {
-    use SoftDeletes, HasForumCategory, Sortable, Searchable;
+    use SoftDeletes, HasForumCategory, Sortable, Searchable, FormAccessible;
     
     /**
      * 言語タグの最大文字数。
@@ -174,5 +175,25 @@ class Dictionary extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+    
+    /**
+     * 辞書編集フォームにおいて、更新内容欄に summary プロパティ値 (CSVファイルの @summary フィールド値) が表示されるのを防ぎます。
+     *
+     * @return string
+     */
+    public function formSummaryAttribute(): string
+    {
+        return '';
+    }
+    
+    /**
+     * 辞書に付いているタグを改行 (LF) 区切りで取得します。
+     *
+     * @return string
+     */
+    public function formTagsAttribute(): string
+    {
+        return $this->getRelationValue('tags')->implode('name', "\n");
     }
 }

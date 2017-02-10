@@ -40,13 +40,7 @@ use App\{Dictionary, Tag, Revision};
         <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
             <dt class="col-md-3 control-label">{{ Form::label('tags', _('タグ')) }}</dt>
             <dd class="col-md-8">
-                {{ Form::textarea(
-                    'tags',
-                    old('tags', isset($dictionary)
-                        ? implode("\n", $dictionary->tags->pluck('name')->toArray())
-                        : ''),
-                    ['class' => 'form-control']
-                ) }}
+                {{ Form::textarea('tags', null, ['class' => 'form-control']) }}
                 <small class="help-block">
                     {{ sprintf(_('改行区切りで最大%s個設定できます。'), Tag::MAX_TAGS) }}
                 </small>
