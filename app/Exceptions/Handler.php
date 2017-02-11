@@ -98,8 +98,14 @@ class Handler extends ExceptionHandler
         $link->setAttribute('rel', 'stylesheet');
         $style = $doc->getElementsByTagName('style')->item(0);
         $style->parentNode->replaceChild($link, $style);
-        $response->setContent($doc->saveHTML());
         
+        $favicon = $doc->createElement('link');
+        $favicon->setAttribute('href', asset('favicon.ico'));
+        $favicon->setAttribute('rel', 'icon');
+        $head = $doc->getElementsByTagName('head')->item(0);
+        $head->insertBefore($favicon, $head->firstChild);
+        
+        $response->setContent($doc->saveHTML());
         return $response;
     }
 
