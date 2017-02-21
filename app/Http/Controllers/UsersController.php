@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\{User, Dictionary};
 use App\Http\Requests\IndexUsersRequest;
 use Illuminate\{Http\Request, View\View};
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -34,5 +34,22 @@ class UsersController extends Controller
     public function show(User $user, Request $request): View
     {
         return view('user.show')->with('shownUser', $user);
+    }
+    
+    /**
+     * ユーザーが作成した個人用辞書一覧を表示します。
+     *
+     * @param \App\User $user
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
+    public function dictionariesIndex(User $user, Request $request): View
+    {
+        return view('user.dictionaries-index')->with([
+            'shownUser' => $user,
+            'dictionaries' => Dictionary::whereIn('id', Dictionary::where('category', 'private')->with('oldestRevision')
+                ->get()->where('oldestRevision.user_id', $user->id)->pluck('id'))
+                ->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page')),
+        ]);
     }
 }

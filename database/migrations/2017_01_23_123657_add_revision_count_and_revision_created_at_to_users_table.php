@@ -3,6 +3,7 @@
 use Illuminate\Database\{Schema\Blueprint, Migrations\Migration};
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\User;
+use App\Observers\UserInfomationCacheUpdater;
 
 class AddRevisionCountAndRevisionCreatedAtToUsersTable extends Migration
 {
@@ -20,12 +21,11 @@ class AddRevisionCountAndRevisionCreatedAtToUsersTable extends Migration
         
         foreach (User::withTrashed()->with(['revisions' => function (HasMany $query): void {
             $query->latest();
-        }])->get() as $user) {
-            $user->revision_count = count($user->revisions);
-            if ($user->revision_count > 0) {
+        }, 'revisions.dictionary'])->get() as $user) {
+            if (isset($user->revisions[0])) {
                 $user->revision_created_at = $user->revisions[0]->created_at;
             }
-            $user->save();
+            (new UserInfomationCacheUpdater())->setRevisionCount($user);
         }
     }
 

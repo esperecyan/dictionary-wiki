@@ -35,6 +35,7 @@ Route::post('users/external-accounts', 'Auth\ExternalAccountsController@requestA
     ->name('users.external-accounts.store');
 
 // ユーザー
+Route::get('users/{user}/dictionaries', 'UsersController@dictionariesIndex')->name('users.dictionaries.index');
 Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
 
 // 辞書

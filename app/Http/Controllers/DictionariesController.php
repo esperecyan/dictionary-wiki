@@ -56,6 +56,7 @@ class DictionariesController extends Controller implements LoggerInterface
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show', 'words']]);
+        $this->middleware('can:update,dictionary', ['only' => ['edit', 'update']]);
     }
     
     /**
@@ -72,7 +73,8 @@ class DictionariesController extends Controller implements LoggerInterface
                 // Support for Laravel Scout · Issue #48 · Kyslik/column-sortable
                 // <https://github.com/Kyslik/column-sortable/issues/48#issuecomment-270252558>
                 ? Dictionary::whereIn('id', Dictionary::search($request->search)->get()->pluck('id'))
-                : new Dictionary())->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'))
+                : new Dictionary())
+                ->public()->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'))
         );
     }
     

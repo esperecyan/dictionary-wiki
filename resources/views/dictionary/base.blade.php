@@ -26,12 +26,19 @@ use Illuminate\Support\HtmlString;
                     e(_('コメント欄')) . ($postsCount > 0 ? " <span class=\"badge\">$postsCount</span>" : '')
                 ),
             ] as $action => $text)
-                <?php $route = "dictionaries.$action"; ?>
-                <li @if ($route === Route::currentRouteName())class="active"@endif>{{ link_to_route(
-                    $route,
-                    $text,
-                    [($action === 'threads.index' ? 'model' : 'dictionary') => $dictionary->id]
-                ) }}</li>
+                <?php
+                $route = "dictionaries.$action";
+                $disabled
+                    = $action === 'edit' && $dictionary->category === 'private' && !Gate::allows('update', $dictionary);
+                ?>
+                <li class="@if ($route === Route::currentRouteName())active @elseif ($disabled)disabled @endif"
+                    @if ($disabled)aria-disabled="true" title="{{ _('個人用辞書は、辞書を作成したユーザーのみが編集できます。') }}"@endif>
+                    {{ link_to_route(
+                        $route,
+                        $text,
+                        [($action === 'threads.index' ? 'model' : 'dictionary') => $dictionary->id]
+                    ) }}
+                </li>
             @endforeach
         </ul>
     </nav>

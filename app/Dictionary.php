@@ -5,9 +5,8 @@ namespace App;
 use esperecyan\dictionary_php\Dictionary as DictionaryRecord;
 use Storage;
 use Laravel\Scout\Searchable;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model, Builder, SoftDeletes};
 use Illuminate\Database\Eloquent\Relations\{HasMany, HasOne, BelongsToMany};
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Collective\Html\Eloquent\FormAccessible;
 use Kyslik\ColumnSortable\Sortable;
 use FilesystemIterator;
@@ -131,7 +130,7 @@ class Dictionary extends Model
                 $name = _('版権・専門');
                 break;
             case 'private':
-                $name = _('身内向け');
+                $name = _('個人用');
                 break;
         }
         return $name;
@@ -155,6 +154,16 @@ class Dictionary extends Model
     public function revision(): HasOne
     {
         return $this->hasOne(Revision::class)->latest();
+    }
+    
+    /**
+     * 最古の更新を取得します。
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function oldestRevision(): HasOne
+    {
+        return $this->hasOne(Revision::class)->oldest();
     }
     
     /**
@@ -195,5 +204,16 @@ class Dictionary extends Model
     public function formTagsAttribute(): string
     {
         return $this->getRelationValue('tags')->implode('name', "\n");
+    }
+    
+    /**
+     * カテゴリ「個人用」(private) が設定されていない辞書に限定するクエリスコープ。
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublic(Builder $query): Builder
+    {
+        return $query->where('category', '<>', 'private');
     }
 }

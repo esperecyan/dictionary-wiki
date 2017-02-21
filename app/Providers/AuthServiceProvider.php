@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\ExternalAccount;
+use App\{Dictionary, ExternalAccount};
+use App\Policies\DictionaryPolicy;
 use Auth;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -16,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        Dictionary::class => DictionaryPolicy::class,
     ];
 
     /**
