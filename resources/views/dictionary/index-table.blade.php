@@ -2,7 +2,7 @@
     @if (count($dictionaries) > 0)
         <thead>
             <tr>
-                <th>{{ _('カテゴリ') }}</th>
+                <th></th>
                 <th>@sortablelink('title', _('辞書名'))</th>
                 <th class="text-right">@sortablelink('words', _('語数'))</th>
                 <th>@sortablelink('updated_at', _('更新日時'))</th>
@@ -14,7 +14,12 @@
         @if (count($dictionaries) > 0)
             @foreach($dictionaries as $dictionary)
                 <tr>
-                    <td>{{ $dictionary->categoryName }}</td>
+                    <td>@if ($dictionary->category === 'specific')
+                        <span class="message-icon" title="{{ $dictionary->categoryName }}">
+                            <i class="fa fa-gamepad"></i>
+                            <span class="text-hide">{{ $dictionary->categoryName }}</span>
+                        </span>
+                    @endif</td>
                     <th><bdi>{{
                         link_to_route('dictionaries.show', $dictionary->title, ['dictionary' => $dictionary->id])
                     }}</bdi></th>

@@ -3,10 +3,6 @@ use esperecyan\html_filter\Filter;
 ?>
 @extends('dictionary.base')
 
-@push('styles')
-    <link href="{{ asset('css/dictionary.css') }}" rel="stylesheet" />
-@endpush
-
 @section('panel-body')
 <div class="panel-body list-group">
     <section class="list-group-item including-labels">

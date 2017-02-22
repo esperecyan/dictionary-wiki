@@ -12,6 +12,10 @@ use Illuminate\Support\HtmlString;
 @endpush
 @endif
 
+@push('styles')
+    <link href="{{ asset('css/dictionary.css') }}" rel="stylesheet" />
+@endpush
+
 @section('content')
 @if (isset($dictionary))
     <?php $postsCount = $dictionary->forumCategory->threads()->withCount('posts')->get()->sum('posts_count'); ?>
@@ -46,7 +50,23 @@ use Illuminate\Support\HtmlString;
 <div class="panel panel-default">
     <h1 class="panel-heading panel-title">
         @if (isset($dictionary))
-            <span class="label label-primary">{{ $dictionary->categoryName }}</span>
+            <span class="label label-primary">
+                <?php
+                switch ($dictionary->category) {
+                    case 'generic':
+                        $categoryIcon = 'fa-globe';
+                        break;
+                    case 'specific':
+                        $categoryIcon = 'fa-gamepad';
+                        break;
+                    case 'private':
+                        $categoryIcon = 'fa-flask';
+                        break;
+                }
+                ?>
+                <i class="fa {{ $categoryIcon }}"></i>
+                {{ $dictionary->categoryName }}
+            </span>
             <bdi>{{ $dictionary->title }}</bdi>
             {{ Html::showDictionaryWarnings($dictionary) }}
             <a href="{{ route('dictionaries.revisions.index', ['dictionary' => $dictionary->id, 'type' => 'atom']) }}"
