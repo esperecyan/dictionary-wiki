@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\{User, Dictionary};
 use App\Http\Requests\IndexUsersRequest;
 use Illuminate\{Http\Request, View\View};
+use App\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class UsersController extends Controller
@@ -41,15 +42,15 @@ class UsersController extends Controller
      *
      * @param \App\User $user
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\App\Http\JsonResponse
      */
-    public function dictionariesIndex(User $user, Request $request): View
+    public function dictionariesIndex(User $user, Request $request)
     {
-        return view('user.dictionaries-index')->with([
-            'shownUser' => $user,
-            'dictionaries' => Dictionary::whereIn('id', Dictionary::where('category', 'private')->with('oldestRevision')
-                ->get()->where('oldestRevision.user_id', $user->id)->pluck('id'))
-                ->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page')),
-        ]);
+        $dictionaries = Dictionary::whereIn('id', Dictionary::where('category', 'private')->with('oldestRevision')
+            ->get()->where('oldestRevision.user_id', $user->id)->pluck('id'))
+            ->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
+        return $request->type === 'json'
+            ? new JsonResponse($dictionaries)
+            : view('user.dictionaries-index')->with(['shownUser' => $user, 'dictionaries' => $dictionaries]);
     }
 }

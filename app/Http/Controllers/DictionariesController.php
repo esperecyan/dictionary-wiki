@@ -63,19 +63,19 @@ class DictionariesController extends Controller implements LoggerInterface
      * 辞書の一覧を表示します。
      *
      * @param \App\Http\Requests\IndexDictionariesRequest $request
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\App\Http\JsonResponse
      */
-    public function index(IndexDictionariesRequest $request): View
+    public function index(IndexDictionariesRequest $request)
     {
-        return view('dictionary.index')->with(
-            'dictionaries',
-            ($request->has('search')
-                // Support for Laravel Scout · Issue #48 · Kyslik/column-sortable
-                // <https://github.com/Kyslik/column-sortable/issues/48#issuecomment-270252558>
-                ? Dictionary::whereIn('id', Dictionary::search($request->search)->get()->pluck('id'))
-                : new Dictionary())
-                ->public()->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'))
-        );
+        $dictionaries = ($request->has('search')
+            // Support for Laravel Scout · Issue #48 · Kyslik/column-sortable
+            // <https://github.com/Kyslik/column-sortable/issues/48#issuecomment-270252558>
+            ? Dictionary::whereIn('id', Dictionary::search($request->search)->get()->pluck('id'))
+            : new Dictionary())
+            ->public()->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
+        return $request->type === 'json'
+            ? new JsonResponse($dictionaries)
+            : view('dictionary.index')->with('dictionaries', $dictionaries);
     }
     
     /**
@@ -128,9 +128,13 @@ class DictionariesController extends Controller implements LoggerInterface
      */
     public function show(Dictionary $dictionary, Request $request)
     {
-        return $request->exists('type')
-            ? $this->get($dictionary, $request)
-            : view('dictionary.show')->with('dictionary', $dictionary);
+        if ($request->type === 'json' && $request->scope === 'header') {
+            return new JsonResponse($dictionary->toArray() + ['tags' => $dictionary->tags->pluck('name')->toArray()]);
+        } elseif ($request->exists('type')) {
+            return $this->get($dictionary, $request);
+        } else {
+            return view('dictionary.show')->with('dictionary', $dictionary);
+        }
     }
     
     /**

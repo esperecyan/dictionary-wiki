@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\{HasMany, HasOne, BelongsToMany};
 use Collective\Html\Eloquent\FormAccessible;
 use Kyslik\ColumnSortable\Sortable;
 use FilesystemIterator;
+use DateTimeInterface;
+use DateTime;
 
 class Dictionary extends Model
 {
@@ -68,11 +70,26 @@ class Dictionary extends Model
      * @var string[]
      */
     protected $touches = ['tags'];
+
+    /**
+     * 直列化する属性。
+     *
+     * @var string[]
+     */
+    protected $visible = ['id', 'category', 'locale', 'title', 'words', 'summary', 'regard', 'updated_at'];
     
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->locale = _('ja');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format(DateTime::RFC3339);
     }
     
     /**
