@@ -47,8 +47,12 @@ class UsersController extends Controller
     public function dictionariesIndex(User $user, Request $request)
     {
         $dictionaries = Dictionary::whereIn('id', Dictionary::where('category', 'private')->with('oldestRevision')
-            ->get()->where('oldestRevision.user_id', $user->id)->pluck('id'))
-            ->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
+            ->get()->where('oldestRevision.user_id', $user->id)->pluck('id'));
+        if ($request->scope === 'without-warnings') {
+            $dictionaries = $dictionaries->withoutWarnings();
+        }
+        $dictionaries
+            = $dictionaries->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
         return $request->type === 'json'
             ? new JsonResponse($dictionaries)
             : view('user.dictionaries-index')->with(['shownUser' => $user, 'dictionaries' => $dictionaries]);

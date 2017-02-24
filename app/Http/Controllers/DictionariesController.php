@@ -67,12 +67,16 @@ class DictionariesController extends Controller implements LoggerInterface
      */
     public function index(IndexDictionariesRequest $request)
     {
-        $dictionaries = ($request->has('search')
+        $dictionaries = $request->has('search')
             // Support for Laravel Scout · Issue #48 · Kyslik/column-sortable
             // <https://github.com/Kyslik/column-sortable/issues/48#issuecomment-270252558>
             ? Dictionary::whereIn('id', Dictionary::search($request->search)->get()->pluck('id'))
-            : new Dictionary())
-            ->public()->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
+            : new Dictionary();
+        if ($request->scope === 'without-warnings') {
+            $dictionaries = $dictionaries->withoutWarnings();
+        }
+        $dictionaries = $dictionaries->public()
+            ->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
         return $request->type === 'json'
             ? new JsonResponse($dictionaries)
             : view('dictionary.index')->with('dictionaries', $dictionaries);

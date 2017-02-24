@@ -233,4 +233,15 @@ class Dictionary extends Model
     {
         return $query->where('category', '<>', 'private');
     }
+    
+    /**
+     * 警告のない辞書 (「@ragard」フィールドがが設定されていない辞書) に限定するクエリスコープ。
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithoutWarnings(Builder $query): Builder
+    {
+        return $query->whereNull('regard');
+    }
 }
