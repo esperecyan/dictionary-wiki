@@ -1,0 +1,283 @@
+{
+	"$schema": "http://json-schema.org/draft-04/hyper-schema#",
+	"title": "esperecyan/dictionary-wiki API",
+	"description": "辞書まとめwikiにおける辞書を取り扱うAPIです。",
+	
+	"definitions": {
+		"dictionary": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "wikiにおける辞書のID",
+					"type": "integer",
+					"minimum": 1,
+					"example": 1
+				},
+				"category": {
+					"title": "カテゴリ",
+					"description": "「generic」は一般・全般、「specific」は版権・専門、「private」は個人用を表します。",
+					"type": "string",
+					"enum": ["generic", "specific", "private"],
+					"example": "generic"
+				},
+				"tags": {
+					"title": "辞書に付いている辞書まとめwiki上のタグ",
+					"description": "このキーは、辞書一覧のdataキー中には含まれません。",
+					"type": ["array"],
+					"item": {
+						"title": "タグ",
+						"description": "タグには、空白を含むあらゆる文字が使用され得ます。ただし、改行は使用されません。",
+						"type": "string",
+						"maxLength": 50
+					},
+					"additionalItems": false,
+					"maxItems": 20,
+					"uniqueItems": true,
+					"example": ["アニメ"]
+				},
+				"locale": {
+					"title": "辞書の利用対象者のロケール (言語)",
+					"title": "辞書に含まれるお題のロケールではなく、辞書の利用対象者のロケールです。IETF言語タグで指定されます。",
+					"type": "string",
+					"maxLength": 35,
+					"example": "ja"
+				},
+				"title": {
+					"title": "辞書名",
+					"description": "辞書の「@title」メタフィールド値。",
+					"type": "string",
+					"maxLength": 400,
+					"example": "普通名詞・初級"
+				},
+				"words": {
+					"title": "語数",
+					"type": "integer",
+					"minimum": 1,
+					"example": 100
+				},
+				"summary": {
+					"title": "概要",
+					"description": "辞書の「@summary」メタフィールド値。CommonMark (Markdown派生の一種) 形式です。",
+					"type": ["string", "null"],
+					"maxLength": 10000,
+					"example": null
+				},
+				"regard": {
+					"title": "コメントを比較用に変換したとき、どのような文字列のみで構成されていればお手付きと判断するかを決める正規表現",
+					"description": "辞書の「@regard」メタフィールド値。この値がnullであれば、基本的にすべてのお題がピクトセンス、およびInteligenceωのしりとり辞書に変換可能です。",
+					"type": ["string", "null"],
+					"example": null
+				},
+				"updated_at": {
+					"title": "更新日時",
+					"type": ["string"],
+					"format": "date-time",
+					"example": "2017-01-01T00:00:00Z"
+				}
+			},
+			"required": ["id", "category", "locale", "title", "words", "summary", "regard", "updated_at"]
+		},
+		"query": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"title": "レスポンス形式",
+					"description": "「json」のみ指定可能。",
+					"type": "string",
+					"enum": ["json"],
+					"example": "json"
+				},
+				"scope": {
+					"title": "レスポンスの範囲",
+					"description": "「without-warnings」を指定することで、ピクトセンス、およびInteligenceωのしりとり辞書に変換可能なお題のみ含む辞書に結果を限定できます。",
+					"type": "string",
+					"enum": ["without-warnings"],
+					"example": "without-warnings"
+				},
+				"sort": {
+					"title": "並べ替えの基準となる列",
+					"description": "辞書名は「title」、語数は「words」、更新日時は「updated_at」。省略された場合、更新が新しい順に並びます。",
+					"type": "string",
+					"enum": ["title", "words", "updated_at"],
+					"default": "updated_at",
+					"example": "updated_at"
+				},
+				"order": {
+					"title": "並び替えの方向",
+					"description": "「asc」で昇順、「desc」で降順に並べ替えます。",
+					"enum": ["asc", "desc"],
+					"example": "desc"
+				},
+				"page": {
+					"title": "ページ番号",
+					"description": "ページ番号は1から始まります。",
+					"type": "integer",
+					"minimum": 1,
+					"default": 1,
+					"example": 1
+				},
+				"search": {
+					"title": "検索語句",
+					"description": "辞書名、タグ、概要、および各お題の正しい表記の答え (textフィールド値) から検索します。",
+					"type": "string",
+					"example": "ゲーム"
+				}
+			},
+			"required": ["type"]
+		},
+		"dictionaries": {
+			"type": "object",
+			"properties": {
+				"total": {
+					"title": "結果の合計",
+					"type": "integer",
+					"minimum": 0,
+					"example": 3
+				},
+				"per_page": {
+					"title": "1ページに表示される辞書の最大数",
+					"type": "integer",
+					"enum": [50],
+					"example": 50
+				},
+				"current_page": {
+					"title": "現在のページ番号",
+					"description": "ページ番号は1から始まります。",
+					"type": "integer",
+					"minimum": 1,
+					"example": 1
+				},
+				"last_page": {
+					"title": "最後のページ番号",
+					"description": "ページ番号は1から始まります。totalが0の場合、0を返します。",
+					"type": "integer",
+					"minimum": 0,
+					"example": 1
+				},
+				"next_page_url": {
+					"title": "次 (ページ数が大きい方) のページのURL",
+					"type": ["string", "null"],
+					"format": "uri",
+					"example": null
+				},
+				"prev_page_url": {
+					"title": "前 (ページ数が少ない方) のページのURL",
+					"type": ["string", "null"],
+					"format": "uri",
+					"example": null
+				},
+				"from": {
+					"title": "現在のページの最初のインデックス",
+					"description": "インデックスは1から始まります。",
+					"type": ["integer", "null"],
+					"minimum": 1,
+					"example": 1
+				},
+				"to": {
+					"title": "現在のページの最後のインデックス",
+					"description": "インデックスは1から始まります。",
+					"type": ["integer", "null"],
+					"minimum": 1,
+					"example": 3
+				},
+				"data": {
+					"title": "辞書一覧",
+					"description": "辞書情報の一覧です。",
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/dictionary"
+					}
+				}
+			}
+		}
+	},
+	
+	"readOnly": true,
+	"properties": {
+		"辞書": {
+			"links": [
+				{
+					"method": "get",
+					"rel": "self",
+					"href": "dictionaries",
+					"title": "辞書一覧",
+					"encType": "application/x-www-form-urlencoded",
+					"schema": {
+						"$ref": "#/definitions/query"
+					},
+					"targetSchema": {
+						"$ref": "#/definitions/dictionaries"
+					}
+				},
+				{
+					"method": "get",
+					"rel": "self",
+					"href": "users/{user}/dictionaries",
+					"title": "ユーザーの個人用辞書一覧",
+					"encType": "application/x-www-form-urlencoded",
+					"schema": {
+						"$ref": "#/definitions/query"
+					},
+					"targetSchema": {
+						"$ref": "#/definitions/dictionaries"
+					}
+				},
+				{
+					"method": "get",
+					"rel": "self",
+					"href": "dictionaries/{dictionary}",
+					"title": "辞書の情報",
+					"encType": "application/x-www-form-urlencoded",
+					"schema": {
+						"type": "object",
+						"properties": {
+							"type": {
+								"title": "レスポンス形式",
+								"description": "「type」に「json」を指定する場合、必ず「scope」で「header」を指定する必要があります。",
+								"type": "string",
+								"enum": ["json"],
+								"example": "json"
+							},
+							"scope": {
+								"title": "レスポンスの範囲",
+								"description": "「type」に「json」を指定する場合、必ず「scope」で「header」を指定する必要があります。",
+								"type": "string",
+								"enum": ["header"],
+								"example": "header"
+							}
+						},
+						"required": ["type", "scope"]
+					},
+					"targetSchema": {
+						"$ref": "#/definitions/dictionary"
+					}
+				},
+				{
+					"rel": "self",
+					"href": "dictionaries/{dictionary}",
+					"title": "直列化された辞書",
+					"description": "指定された形式に変換された辞書を返します。変換に失敗した場合、エラー内容を表すJSONを返します。",
+					"method": "get",
+					"encType": "application/x-www-form-urlencoded",
+					"schema": {
+						"type": "object",
+						"properties": {
+							"type": {
+								"title": "辞書形式",
+								"description": "汎用辞書は「csv」、キャッチフィーリング・DrawingCatchは「cfq」、きゃっちまは「dat」、Inteligence ω のクイズ辞書は「quiz」、同じくしりとり辞書は「siri」、ピクトセンスは「pictsense」を指定します。",
+								"type": "string",
+								"enum": ["csv", "cfq", "dat", "quiz", "siri", "pictsense"],
+								"example": "csv"
+							}
+						},
+						"required": ["type"]
+					},
+					"mediaType": "*/*",
+					"targetSchema": {
+						"$ref": "https://raw.githubusercontent.com/esperecyan/dictionary-php/v0.7.9/error-schema.json#"
+					}
+				}
+			]
+		}
+	}
+}

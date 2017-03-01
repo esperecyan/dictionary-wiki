@@ -47,6 +47,14 @@
             <div class="collapse navbar-collapse" id="site-feedback">
                 <ul class="nav navbar-nav navbar-right">
                     <li>{{ link_to_route('site.threads.index', _('サイトのフィードバック')) }}</li>
+                    <li><a href="https://github.com/esperecyan/dictionary-wiki/blob/v0.1.0/resources/schemas/apis.md"
+                        target="_blank" rel="external noopener noreferrer">
+                        {{ _('開発者向けAPI') }}
+                    </a></li>
+                    <li><a href="https://github.com/esperecyan/dictionary-wiki/"
+                        target="_blank" rel="external noopener noreferrer">
+                        {{ _('GitHub') }}
+                    </a></li>
                 </ul>
             </div>
         </div>
