@@ -78,7 +78,7 @@ class DictionariesController extends Controller implements LoggerInterface
         $dictionaries = $dictionaries->public()
             ->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
         return $request->type === 'json'
-            ? new JsonResponse($dictionaries)
+            ? new JsonResponse($dictionaries, Response::HTTP_OK, ['access-control-allow-origin' => '*'])
             : view('dictionary.index')->with('dictionaries', $dictionaries);
     }
     
@@ -133,7 +133,11 @@ class DictionariesController extends Controller implements LoggerInterface
     public function show(Dictionary $dictionary, Request $request)
     {
         if ($request->type === 'json' && $request->scope === 'header') {
-            return new JsonResponse($dictionary->toArray() + ['tags' => $dictionary->tags->pluck('name')->toArray()]);
+            return new JsonResponse(
+                $dictionary->toArray() + ['tags' => $dictionary->tags->pluck('name')->toArray()],
+                Response::HTTP_OK,
+                ['access-control-allow-origin' => '*']
+            );
         } elseif ($request->exists('type')) {
             return $this->get($dictionary, $request);
         } else {
@@ -447,7 +451,7 @@ class DictionariesController extends Controller implements LoggerInterface
                         'detail' => $exception->getMessage(),
                     ],
                     Response::HTTP_BAD_REQUEST,
-                    ['content-type' => 'application/problem+json']
+                    ['content-type' => 'application/problem+json', 'access-control-allow-origin' => '*']
                 );
             }
             
@@ -459,7 +463,8 @@ class DictionariesController extends Controller implements LoggerInterface
                         : ResponseHeaderBag::DISPOSITION_ATTACHMENT,
                     $file['name'],
                     static::FILENAME_FALLBACK . '.' . explode('.', $file['name'])[1]
-                ));
+                ))
+                ->header('access-control-allow-origin', '*');
         } else {
             return redirect($request->fullUrlWithQuery(['type' => array_keys(static::TYPES)[0]]));
         }

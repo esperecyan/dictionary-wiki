@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\{User, Dictionary};
 use App\Http\Requests\IndexUsersRequest;
-use Illuminate\{Http\Request, View\View};
+use Illuminate\View\View;
+use Illuminate\Http\{Request, Response};
 use App\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -54,7 +55,7 @@ class UsersController extends Controller
         $dictionaries
             = $dictionaries->sortable(['updated_at' => 'desc'])->paginate()->appends($request->except('page'));
         return $request->type === 'json'
-            ? new JsonResponse($dictionaries)
+            ? new JsonResponse($dictionaries, Response::HTTP_OK, ['access-control-allow-origin' => '*'])
             : view('user.dictionaries-index')->with(['shownUser' => $user, 'dictionaries' => $dictionaries]);
     }
 }
