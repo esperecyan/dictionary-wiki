@@ -55,8 +55,7 @@ use esperecyan\html_filter\Filter;
         class="list-group-item row" id="copy-buttons" title="{{ _('JavaScriptを有効化する必要があります。') }}">
         <ul class="col-md-8">
             <li>
-                <button type="button" name="copy" value="quiz" disabled="" class="btn btn-default"
-                    data-file="{{ _('画像・音声ファイルを含むInteligenceω クイズ辞書は、ダウンロードする必要があります。') }}">
+                <button type="button" name="copy" value="quiz" disabled="" class="btn btn-default">
                     <i class="fa fa-clipboard"></i>
                     {{ _('Inteligenceω クイズの辞書のURLをクリップボードにコピー') }}
                 </button>

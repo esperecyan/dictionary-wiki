@@ -22,13 +22,7 @@ let ClipboardManager = {
 		window.addEventListener('copy', this);
 		parent.removeAttribute('title');
 		
-		let exclusions = [];
-		if (document.querySelector('.btn-group [href*="scope=text"]')) {
-			let button = parent.querySelector('[name="copy"][value="quiz"]');
-			button.title = button.dataset.file;
-			exclusions.push(button);
-		}
-		this.enableButtons(exclusions);
+		this.enableButtons();
 	},
 	
 	inMicrosoftEdge: function ()
@@ -65,7 +59,7 @@ let ClipboardManager = {
 					
 					let url = new URL(location);
 					//url.searchParams.set('type', this.button.value);
-					url.search = '?type=' + this.button.value;
+					url.search = '?type=' + this.button.value + (this.button.value === 'quiz' ? '&scope=text' : '');
 					if (this.inMicrosoftEdge() && ['quiz', 'siri'].includes(this.button.value)) {
 						event.clipboardData.setData('text', url);
 					}

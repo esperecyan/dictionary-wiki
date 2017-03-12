@@ -441,7 +441,9 @@ class DictionariesController extends Controller implements LoggerInterface
 
             $serializer = new Serializer(static::TYPES[$request->input('type')]);
             try {
-                $file = $serializer->serialize($latest, $request->scope === 'text');
+                $file = $serializer->serialize($latest, $request->scope === 'text'
+                    ? route('dictionaries.files.show', ['dictionary' => $dictionary->id, 'file' => '%s'])
+                    : false);
             } catch (SerializeExceptionInterface $exception) {
                 return new JsonResponse(
                     [

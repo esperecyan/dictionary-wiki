@@ -54,16 +54,16 @@ class MacroServiceProvider extends ServiceProvider
                         return iterator_to_array($body->getElementsByTagName($elementName));
                     }, ['img', 'audio', 'video'])) as $embededContent) {
                         $src = $embededContent->getAttribute('src');
-                        if (str_contains($src, '/')) {
-                            $embededContent->parentNode->replaceChild(
-                                new DOMText((new HtmlConverter())->convert((new HTML5())->saveHTML($embededContent))),
-                                $embededContent
-                            );
-                        } else {
+                        if (preg_match('/^[-.0-9_a-z]+$/', $src)) {
                             $embededContent->setAttribute('src', route(
                                 'dictionaries.files.show',
                                 ['dictionary' => request()->route('dictionary'), 'file' => $src]
                             ));
+                        } else {
+                            $embededContent->parentNode->replaceChild(
+                                new DOMText((new HtmlConverter())->convert((new HTML5())->saveHTML($embededContent))),
+                                $embededContent
+                            );
                         }
                     }
                 }]

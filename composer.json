@@ -24,7 +24,7 @@
         "laravel/scout": "^3.0.0",
         "algolia/algoliasearch-client-php": "^1.13.0",
         "laravelcollective/html": "^5.2.4",
-        "esperecyan/dictionary-php": "^0.7.8",
+        "esperecyan/dictionary-php": "^0.8.0",
         "esperecyan/html-filter": "^1.1.1",
         "logue/igo-php": "@dev",
         "graham-campbell/markdown": "^7.0.0",
