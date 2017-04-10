@@ -23,7 +23,9 @@
         "laravel/socialite": "^3.0.2",
         "laravel/scout": "^3.0.0",
         "algolia/algoliasearch-client-php": "^1.13.0",
+        "laravel/dusk": "^1.0.12",
         "laravelcollective/html": "^5.2.4",
+        "psr/log": "^1.0.2",
         "esperecyan/dictionary-php": "^0.8.0",
         "esperecyan/html-filter": "^1.1.1",
         "logue/igo-php": "@dev",
@@ -42,6 +44,7 @@
         "roumen/feed": "^2.10.4"
     },
     "require-dev": {
+        "ext-gd": "*",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "^5.7.4",
