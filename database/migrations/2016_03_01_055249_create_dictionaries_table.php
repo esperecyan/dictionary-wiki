@@ -22,6 +22,7 @@ class CreateDictionariesTable extends Migration
             $table->string('summary')->nullable();
             $table->string('regard')->nullable();
             $table->binary('latest');
+            $table->timestamp('updated_at');
             $table->softDeletes();
         });
         if (DB::getDefaultConnection() === 'mysql') {

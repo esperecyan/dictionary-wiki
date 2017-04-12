@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration
             $table->integer('email_provider_id')->unsigned()->nullable();
             $table->integer('avatar_provider_id')->unsigned()->nullable();
             $table->string('profile', User::MAX_PROFILE_LENGTH)->nullable();
+            $table->integer('revision_count')->unsigned()->default(0);
+            $table->timestamp('revision_created_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
