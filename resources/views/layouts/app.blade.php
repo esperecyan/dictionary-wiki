@@ -7,7 +7,7 @@ use Illuminate\Support\HtmlString;
     <link rel="icon" href="{{ asset('favicon.ico') }}" />
     @stack('metas')
 
-    <title>@hasSection('title')@yield('title') | @endif{{ _('辞書まとめwiki') }} α版</title>
+    <title>@hasSection('title')@yield('title') | @endif{{ _('辞書まとめwiki') }} β版</title>
 
     <!-- Fonts -->
     <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet" />

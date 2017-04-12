@@ -23,7 +23,7 @@ class HomePage extends Page
      */
     public function assert(Browser $browser)
     {
-        $browser->assertTitle('辞書まとめwiki α版')
+        $browser->assertTitle('辞書まとめwiki β版')
             ->assertSeeLink('辞書まとめwiki')->assertSeeLink('辞書一覧')->assertSeeLink('ユーザー一覧')
             ->assertSeeLink('サイトのフィードバック')->assertSeeLink('開発者向けAPI')->assertSeeLink('GitHub');
     }

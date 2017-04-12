@@ -47,7 +47,7 @@ class UsersTest extends DuskTestCase
                 ->assertChecked('public[]', 'twitter')
                 ->assertInputValue('profile', '')
             ->visit('/users/1')
-                ->assertTitle('ギットハブ名 | ユーザー | 辞書まとめwiki α版')
+                ->assertTitle('ギットハブ名 | ユーザー | 辞書まとめwiki β版')
                 ->assertSeeLink('詳細')->assertSeeIn('main .tabs .active', '詳細')
                 ->assertSeeLink('個人用辞書')
                 ->assertSeeLink('コメント欄')
@@ -68,7 +68,7 @@ class UsersTest extends DuskTestCase
                 ->assertNotChecked('public[]', 'twitter')
                 ->assertInputValue('profile', '[自己紹介内のリンク](https://dictionary-wiki.test/)')
             ->visit('/users/1')
-                ->assertTitle('ツイッター名 | ユーザー | 辞書まとめwiki α版')
+                ->assertTitle('ツイッター名 | ユーザー | 辞書まとめwiki β版')
                 ->assertDontSeeLink('GitHub')
                 ->assertDontSeeLink('Facebook')
                 ->assertDontSeeLink('Google')
@@ -88,7 +88,7 @@ class UsersTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/users/1/dictionaries')
-                ->assertTitle('ギットハブ名 — 個人用辞書 | ユーザー | 辞書まとめwiki α版')
+                ->assertTitle('ギットハブ名 — 個人用辞書 | ユーザー | 辞書まとめwiki β版')
                 ->assertSeeLink('詳細')
                 ->assertSeeLink('個人用辞書')->assertSeeIn('main .tabs .active', '個人用辞書')
                 ->assertSeeLink('コメント欄');
@@ -104,14 +104,14 @@ class UsersTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser): void {
             $browser->loginAs(1)->visit('/users/1/threads')
-                ->assertTitle('1 - Forum | 辞書まとめwiki α版')
+                ->assertTitle('1 - Forum | 辞書まとめwiki β版')
                 ->assertSeeLink('スレッド一覧')
                 ->assertSee('New thread')
             ->clickLink('New thread')
                 ->type('title', 'スレッド作成テスト　タイトル')
                 ->type('content', 'スレッド作成テスト　本文')
             ->press('Create')
-                ->assertTitleContains('スレッド作成テスト　タイトル - 1 - Forum | 辞書まとめwiki α版')
+                ->assertTitleContains('スレッド作成テスト　タイトル - 1 - Forum | 辞書まとめwiki β版')
                 ->assertSeeLink('スレッド作成テスト　タイトル')
                 ->assertSee('スレッド作成テスト　本文');
         });
@@ -154,7 +154,7 @@ class UsersTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser): void {
             $browser->logout()->visit('/login')
-                ->assertTitle('ログイン | 辞書まとめwiki α版')
+                ->assertTitle('ログイン | 辞書まとめwiki β版')
             ->press('GitHub');
                 $this->assertStringStartsWith('https://github.com/login?', $browser->driver->getCurrentURL());
                 $browser->assertTitle('Sign in to GitHub · GitHub')

@@ -33,7 +33,7 @@ class DictionariesTest extends DuskTestCase
         $url;
         $this->browse(function (Browser $browser) use (&$url) {
             $browser->loginAs(1)->visit('/dictionaries/create')
-                ->assertTitle('辞書の新規作成 | 辞書まとめwiki α版')
+                ->assertTitle('辞書の新規作成 | 辞書まとめwiki β版')
                 ->type('tags', "test\nテスト")
                 ->select('category', 'generic')
                 ->assertInputValue('locale', 'ja')
@@ -110,7 +110,7 @@ class DictionariesTest extends DuskTestCase
                     config('app.url') . '/dictionaries/%d',
                     $browser->driver->getCurrentURL()
                 );
-                $browser->assertTitle('天体 | 辞書まとめwiki α版')
+                $browser->assertTitle('天体 | 辞書まとめwiki β版')
                 ->assertSee('成功しました。');
             
             $url = $browser->driver->getCurrentURL();
@@ -144,7 +144,7 @@ class DictionariesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($url) {
             $browser->visit($url)
-                ->assertTitle('天体 | 辞書まとめwiki α版')
+                ->assertTitle('天体 | 辞書まとめwiki β版')
                 ->assertSeeLink('ダウンロード')->assertSeeIn('main .tabs .active', 'ダウンロード')
                 ->assertSeeLink('お題一覧 3')
                 ->assertSeeLink('更新履歴')
@@ -217,7 +217,7 @@ class DictionariesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($url) {
             $browser->visit("$url/words")
-                ->assertTitle('天体 — お題一覧 | 辞書まとめwiki α版')
+                ->assertTitle('天体 — お題一覧 | 辞書まとめwiki β版')
                 ->assertSeeLink('ダウンロード')
                 ->assertSeeLink('お題一覧 3')->assertSeeIn('main .tabs .active', 'お題一覧 3')
                 ->assertSeeLink('更新履歴')
@@ -265,7 +265,7 @@ class DictionariesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($url) {
             $browser->loginAs(1)->visit("$url/edit")
-                ->assertTitle('天体 — 編集 | 辞書まとめwiki α版')
+                ->assertTitle('天体 — 編集 | 辞書まとめwiki β版')
                 ->assertSeeLink('ダウンロード')
                 ->assertSeeLink('お題一覧 3')
                 ->assertSeeLink('更新履歴')
@@ -303,7 +303,7 @@ class DictionariesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($url) {
             $browser->visit("$url/revisions")
-                ->assertTitle('天体 — 更新履歴 | 辞書まとめwiki α版')
+                ->assertTitle('天体 — 更新履歴 | 辞書まとめwiki β版')
                 ->assertSeeLink('ダウンロード')
                 ->assertSeeLink('お題一覧 3')
                 ->assertSeeLink('更新履歴')->assertSeeIn('main .tabs .active', '更新履歴')
@@ -329,7 +329,7 @@ class DictionariesTest extends DuskTestCase
                     "$url/revisions/diff?revisions%5B%5D=%d&revisions%5B%5D=%d",
                     $browser->driver->getCurrentURL()
                 );
-                $browser->assertTitle('「天体」の差分 | 辞書まとめwiki α版')
+                $browser->assertTitle('「天体」の差分 | 辞書まとめwiki β版')
                 ->assertSeeLink('天体')
                 
                 ->assertSeeIn('main thead th:nth-of-type(1)', '更新日時')
