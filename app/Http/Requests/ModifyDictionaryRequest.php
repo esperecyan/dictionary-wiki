@@ -50,7 +50,7 @@ class ModifyDictionaryRequest extends FormRequest
             
             // 辞書ファイルのアップロードによる新規作成。
             'dictionary' => ['file'],
-            'type' => ['in:' . implode(',', array_keys(DictionariesController::TYPES))],
+            'type' => ['in:' . implode(',', array_keys(DictionariesController::TYPES)), 'nullable'],
             'name' => ['string', 'max:' . Dictionary::MAX_FIELD_LENGTH],
             
             // CSVの記述による新規作成時、および更新時の同梱ファイル追加・削除。

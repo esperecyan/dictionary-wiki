@@ -121,6 +121,24 @@ class DictionariesTest extends DuskTestCase
     }
     
     /**
+     * アップロードによる辞書の作成。
+     *
+     * @return void
+     */
+    public function testStoreDictionaryFile(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)->visit('/dictionaries/create')
+                ->assertTitle('辞書の新規作成 | 辞書まとめwiki β版')
+                ->select('category', 'specific')
+                ->attach('dictionary', base_path('tests/dictionaries/touhou-musics.csv'))
+            ->press('新規作成')
+                ->assertTitle('東方原曲 (紅魔郷〜紺珠伝) ※CD限定の曲は含まず | 辞書まとめwiki β版')
+            ->logout();
+        });
+    }
+    
+    /**
      * PNG形式のバイナリ文字列を生成します。
      *
      * @return string
