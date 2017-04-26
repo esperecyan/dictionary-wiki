@@ -32,8 +32,17 @@ class Dictionary extends Model
     const CATEGORIES = ['generic', 'specific', 'private'];
     
     /**
-     * 汎用辞書に1つのフィールドの文字数制限 (CommonMarkで記述するフィールドを除く)。
+     * 汎用辞書のCommonMarkで記述する1つのフィールドの文字数制限。
      *
+     * @see https://github.com/esperecyan/dictionary/blob/master/dictionary.md#%E5%90%84%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%88%B6%E9%99%90 各フィールドに対する制限 | 基底となるファイル形式 | 主に単語で答えるゲームにおける汎用的な辞書形式
+     * @var int
+     */
+    const MAX_FIELD_WITH_MARKUP_LENGTH = 10000;
+    
+    /**
+     * 汎用辞書の1つのフィールドの文字数制限 (CommonMarkで記述するフィールドを除く)。
+     *
+     * @see https://github.com/esperecyan/dictionary/blob/master/dictionary.md#%E5%90%84%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%88%B6%E9%99%90 各フィールドに対する制限 | 基底となるファイル形式 | 主に単語で答えるゲームにおける汎用的な辞書形式
      * @var int
      */
     const MAX_FIELD_LENGTH = 400;

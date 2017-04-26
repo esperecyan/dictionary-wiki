@@ -131,10 +131,77 @@ class DictionariesTest extends DuskTestCase
             $browser->loginAs(1)->visit('/dictionaries/create')
                 ->assertTitle('辞書の新規作成 | 辞書まとめwiki β版')
                 ->select('category', 'specific')
-                ->attach('dictionary', base_path('tests/dictionaries/touhou-musics.csv'))
+                ->attach('dictionary', base_path('tests/dictionaries/touhou-characters.csv'))
             ->press('新規作成')
-                ->assertTitle('東方原曲 (紅魔郷〜紺珠伝) ※CD限定の曲は含まず | 辞書まとめwiki β版')
-            ->logout();
+                ->assertTitle('東方Project 登場人物 紅魔郷以降の主要キャラ | 辞書まとめwiki β版');
+                $this->assertEqualHTMLStringWithoutWhiteSpaces(
+                    '<h1></h1>
+                    <ul>
+                        <li>
+                            上海アリス幻樂団によるゲーム作品 (弾幕シューティング)
+                            <ul>
+                                <li>主人公</li>
+                                <li>ボス</li>
+                                <li>
+                                    中ボス
+                                    <ul>
+                                        <li>
+                                            紅魔郷二面中ボスは
+                                            <a href="http://dic.pixiv.net/a/%E5%A4%A7%E5%A6%96%E7%B2%BE#h2_0">
+                                                <code>だいようせい</code>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            紅魔郷四面中ボスは
+                                            <a href="http://dic.pixiv.net/a/%E5%B0%8F%E6%82%AA%E9%AD%94(%E6%9D%B1%E6%96%B9Project)">
+                                                <code>こあくま</code>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <ruby>人形<rt>ひとがた</rt></ruby>
+                                            でない
+                                            <a href="http://dic.pixiv.net/a/%E7%A5%9E%E9%9C%8A%E5%BB%9F%E4%B8%80%E9%9D%A2%E4%B8%AD%E3%83%9C%E3%82%B9">
+                                                神霊廟一面中ボス
+                                            </a>
+                                            は未収録
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            上海アリス幻樂団、黄昏フロンティアによるゲーム作品 (弾幕アクション)
+                            <ul>
+                                <li>プレイヤーキャラクター</li>
+                            </ul>
+                        </li>
+                        <li>
+                            書籍・CD
+                            <ul>
+                                <li>
+                                    名前 (固有名称) と容姿が分かる<ruby>人形<rt>ひとがた</rt></ruby>の登場人物
+                                    <ul>
+                                        <li>あまり有名でない<a href="http://dic.pixiv.net/a/%E9%81%8B%E6%9D%BE">運松</a>は未収録</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    容姿が分かる有名な登場人物
+                                    <ul>
+                                        <li>
+                                            <a href="http://dic.pixiv.net/a/%E6%9C%B1%E9%B7%BA%E5%AD%90">
+                                                朱鷺子 (名無しの本読み妖怪)
+                                            </a>
+                                        </li>
+                                        <li><a href="http://dic.pixiv.net/a/%E6%98%93%E8%80%85#h2_1">易者 (易者の妖怪)</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>',
+                    $browser->element('main section:nth-of-type(2).list-group-item > section')
+                        ->getAttribute('innerHTML')
+                );
+            $browser->logout();
         });
     }
     
