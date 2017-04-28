@@ -16,7 +16,7 @@
             <li><a href="http://www.forest.impress.co.jp/library/software/catchfeeling/" rel="external" target="_blank">
                 {{ _('キャッチフィーリング') }}
             </a></li>
-            <li><a href="http://drafly.nazo.cc/games/olds/DC" rel="external" target="_blank">
+            <li><a href="http://www.houmotsuko.net/game/old/drawcatch/index" rel="external" target="_blank">
                 {{ _('Drawing Catch') }}
             </a></li>
             <li><a href="http://vodka-catchm.seesaa.net/article/115922159.html" rel="external" target="_blank">
