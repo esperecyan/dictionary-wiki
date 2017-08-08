@@ -29,7 +29,7 @@
         "esperecyan/dictionary-php": "^0.8.0",
         "esperecyan/html-filter": "^1.1.1",
         "logue/igo-php": "@dev",
-        "graham-campbell/markdown": "^7.0.0",
+        "graham-campbell/markdown": "^8.0.0",
         "league/html-to-markdown": "^4.3.1",
         "masterminds/html5": "^2.2.2",
         "bantu/ini-get-wrapper": "^1.0.1",

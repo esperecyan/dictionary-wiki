@@ -72,9 +72,18 @@ class HtmlServiceProvider extends BaseHtmlServiceProvider
                 /**
                  * @inheritDoc
                  */
-                public function select($name, $list = array(), $selected = null, $options = [])
-                {
-                    return $this->formControl(parent::select($name, $list, $selected, $options), $name, $options);
+                public function select(
+                    $name,
+                    $list = [],
+                    $selected = null,
+                    array $selectAttributes = [],
+                    array $optionsAttributes = []
+                ) {
+                    return $this->formControl(
+                        parent::select($name, $list, $selected, $selectAttributes, $optionsAttributes),
+                        $name,
+                        $selectAttributes
+                    );
                 }
                 
                 /**
