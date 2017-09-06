@@ -171,7 +171,7 @@ class UsersTest extends DuskTestCase
                 ->assertSee('Invalid parameter value for redirect_uri: Non-public domains not allowed:')
             ->back()->press('LinkedIn');
                 $this->assertStringStartsWith('https://www.linkedin.com/uas/login?', $browser->driver->getCurrentURL());
-                $this->assertRegExp('/^LinkedIn(?: にサインイン|にログイン)$/', $browser->driver->getTitle());
+                $this->assertRegExp('/^LinkedIn\\s*に(?:サインイン|ログイン)$/', $browser->driver->getTitle());
             $browser->back()->press('Twitter');
                 $this->assertStringStartsWith(
                     'https://api.twitter.com/oauth/authenticate?',
