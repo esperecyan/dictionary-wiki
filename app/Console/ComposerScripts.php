@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use Illuminate\Foundation\{ComposerScripts as BaseComposerScripts, Application};
+use Illuminate\Foundation\Application;
 use Composer\Script\Event;
 
 class ComposerScripts
@@ -55,7 +55,6 @@ class ComposerScripts
     public static function postInstall(Event $event): void
     {
         static::initialize($event);
-        BaseComposerScripts::postInstall($event);
         
         if (static::isSetDBPassword()) {
             if (!$event->isDevMode()) {

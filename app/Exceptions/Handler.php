@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
@@ -11,22 +10,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use bantu\IniGetWrapper\IniGetWrapper;
 use ScriptFUSION\Byte\ByteFormatter;
-use DOMDocument;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that should not be reported.
+     * A list of the exception types that are not reported.
      *
      * @var array
      */
     protected $dontReport = [
-        \Illuminate\Auth\AuthenticationException::class,
-        \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
-        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
-        \Illuminate\Session\TokenMismatchException::class,
-        \Illuminate\Validation\ValidationException::class,
+        //
+    ];
+    
+    /**
+     * A list of the inputs that are never flashed for validation exceptions.
+     *
+     * @var array
+     */
+    protected $dontFlash = [
+        'password',
+        'password_confirmation',
     ];
 
     /**
@@ -79,48 +82,5 @@ class Handler extends ExceptionHandler
                 ->with('_status', $status)->withErrors($exception->getMessage())->withInput();
         }
         return parent::render($request, $exception);
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    protected function convertExceptionToResponse(Exception $e): Response
-    {
-        $response = parent::convertExceptionToResponse($e);
-        $doc = new DOMDocument();
-        
-        $useErrors = libxml_use_internal_errors(true);
-        $doc->loadHTML($response->getContent());
-        libxml_use_internal_errors($useErrors);
-        
-        $link = $doc->createElement('link');
-        $link->setAttribute('href', asset('css/symfony-debug-exception.css'));
-        $link->setAttribute('rel', 'stylesheet');
-        $style = $doc->getElementsByTagName('style')->item(0);
-        $style->parentNode->replaceChild($link, $style);
-        
-        $favicon = $doc->createElement('link');
-        $favicon->setAttribute('href', asset('favicon.ico'));
-        $favicon->setAttribute('rel', 'icon');
-        $head = $doc->getElementsByTagName('head')->item(0);
-        $head->insertBefore($favicon, $head->firstChild);
-        
-        $response->setContent($doc->saveHTML());
-        return $response;
-    }
-
-    /**
-     * Convert an authentication exception into an unauthenticated response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
-     * @return \Illuminate\Http\Response
-     */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
-        if ($request->expectsJson()) {
-            return response()->json(['error' => 'Unauthenticated.'], 401);
-        }
-        return redirect()->guest('login');
     }
 }

@@ -120,7 +120,7 @@ class HtmlServiceProvider extends BaseHtmlServiceProvider
                 {
                     return $this->toHtmlString(preg_replace(
                         '/^<option/',
-                        '$0' . $this->html->attributes(['disabled']),
+                        '$0' . $this->html->attributes(['disabled' => '']),
                         parent::placeholderOption($display, $selected)
                     ));
                 }

@@ -188,7 +188,7 @@ class HtmlServiceProviderTest extends TestCase
             '],
             ['category', ['public' => '公開', 'private' => '個人用'], null, ['placeholder' => '選択してください'], '
                 <select name="category">
-                    <option selected="selected" disabled="disabled" value="">選択してください</option>
+                    <option selected="selected" disabled="" value="">選択してください</option>
                     <option value="public">公開</option>
                     <option value="private">個人用</option>
                 </select>

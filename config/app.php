@@ -1,6 +1,6 @@
 <?php
 
-return array_merge_recursive([
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -10,8 +10,9 @@ return array_merge_recursive([
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
+    |
     */
-    'name' => '辞書まとめwiki',
+    'name' => env('APP_NAME', '辞書まとめwiki'),
 
     /*
     |--------------------------------------------------------------------------
@@ -165,17 +166,9 @@ return array_merge_recursive([
         /*
          * Package Service Providers...
          */
-        Laravel\Tinker\TinkerServiceProvider::class,
-        Laravel\Socialite\SocialiteServiceProvider::class,
-        Laravel\Scout\ScoutServiceProvider::class,
-        //Collective\Html\HtmlServiceProvider::class,
         App\Providers\HtmlServiceProvider::class,
-        GrahamCampbell\Markdown\MarkdownServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
         Riari\Forum\ForumServiceProvider::class,
         Riari\Forum\Frontend\ForumFrontendServiceProvider::class,
-        Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
-        Roumen\Feed\FeedServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -236,20 +229,10 @@ return array_merge_recursive([
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
         
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
         'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
-        'Debugbar'  => Barryvdh\Debugbar\Facade::class,
 
     ],
 
-], array_map(function (array $fqcns): array {
-    return array_filter($fqcns, 'class_exists');
-}, [
-    'providers' => [
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-    ],
-    'aliases' => [
-    ],
-]));
+];

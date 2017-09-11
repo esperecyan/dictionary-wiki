@@ -8,7 +8,8 @@
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ $1 [L,R=301]
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -45,6 +46,9 @@ Require all granted
         Header always edit* content-security-policy img-src|font-src "$0 data:"
         Header always edit* content-security-policy script-src "$0 'unsafe-inline'"
         Header always edit* content-security-policy style-src "$0 'unsafe-inline'"
+
+        # filp/whoops <https://github.com/filp/whoops/blob/2.1.10/src/Whoops/Resources/js/whoops.base.js#L35> 用の設定
+        Header always edit* content-security-policy script-src "$0 cdnjs.cloudflare.com/ajax/libs/prettify/"
 
 		# Faker\Provider\Image 用の設定
         Header always edit* content-security-policy img-src "$0 http://lorempixel.com/"

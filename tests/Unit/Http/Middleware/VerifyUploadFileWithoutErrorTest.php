@@ -21,9 +21,11 @@ class VerifyUploadFileWithoutErrorTest extends TestCase
         if ($exception) {
             $this->expectException(UploadException::class);
         }
-        (new VerifyUploadFileWithoutError())->handle(new Request([], [], [], [], $files), function () {
-            return new Response();
-        });
+        (new VerifyUploadFileWithoutError())
+            ->handle(new Request([], [], [], [], $files), function (Request $request) use ($files): Response {
+                $this->assertEquals($files, $request->file());
+                return new Response();
+            });
     }
     
     public function filesProvider(): array

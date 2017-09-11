@@ -67,7 +67,7 @@ class DictionariesController extends Controller implements LoggerInterface
      */
     public function index(IndexDictionariesRequest $request)
     {
-        $dictionaries = $request->has('search')
+        $dictionaries = $request->filled('search')
             // Support for Laravel Scout · Issue #48 · Kyslik/column-sortable
             // <https://github.com/Kyslik/column-sortable/issues/48#issuecomment-270252558>
             ? Dictionary::whereIn('id', Dictionary::search($request->search)->get()->pluck('id'))
@@ -184,7 +184,7 @@ class DictionariesController extends Controller implements LoggerInterface
             
             // ファイルの削除
             $this->deleteFiles($dictionary, array_merge(
-                $request->has('deleted-file-names') ? $request->input('deleted-file-names') : [],
+                $request->filled('deleted-file-names') ? $request->input('deleted-file-names') : [],
                 array_map(function (UploadedFile $addedFile): string {
                     return $addedFile->getClientOriginalName();
                 }, $request->file('added-files', []))
@@ -221,9 +221,9 @@ class DictionariesController extends Controller implements LoggerInterface
         $dictionaryFile = $request->file('dictionary');
         
         $parser = new Parser(
-            $request->has('type') ? static::TYPES[$request->input('type')] : null,
+            $request->filled('type') ? static::TYPES[$request->input('type')] : null,
             $dictionaryFile->getClientOriginalName() ?? sprintf(_('%sの辞書'), Auth::user()->name),
-            $request->has('name') ? $request->input('name') : null
+            $request->filled('name') ? $request->input('name') : null
         );
         $parser->setLogger($this);
         
@@ -340,11 +340,11 @@ class DictionariesController extends Controller implements LoggerInterface
      */
     protected function getTagsFromInputData(Request $request): array
     {
-        return $request->has('tags') ? array_slice(array_filter(
-            $request->has('tags') ? array_map(
+        return $request->filled('tags') ? array_slice(array_filter(
+            array_map(
                 [$this, 'correctTag'],
                 preg_split('/\\R/u', $request->input('tags'), null, PREG_SPLIT_NO_EMPTY)
-            ) : [],
+            ),
             function (string $tag): bool {
                 return $tag !== '';
             }
