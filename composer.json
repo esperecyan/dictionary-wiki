@@ -24,7 +24,6 @@
         "laravel/socialite": "^3.0.7",
         "laravel/scout": "^3.0.7",
         "algolia/algoliasearch-client-php": "^1.13.0",
-        "laravel/dusk": "^2.0.1",
         "laravelcollective/html": "^5.5.1",
         "psr/log": "^1.0.2",
         "esperecyan/dictionary-php": "^0.8.0",
@@ -46,6 +45,7 @@
     },
     "require-dev": {
         "ext-gd": "*",
+        "laravel/dusk": "^2.0.1",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
