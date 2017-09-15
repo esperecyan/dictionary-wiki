@@ -4,12 +4,14 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Session\TokenMismatchException;
-use Illuminate\Http\Exceptions\PostTooLargeException;
+use Illuminate\Http\{Response, Exceptions\PostTooLargeException};
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use bantu\IniGetWrapper\IniGetWrapper;
 use ScriptFUSION\Byte\ByteFormatter;
+use DOMDocument;
 
 class Handler extends ExceptionHandler
 {
@@ -82,5 +84,34 @@ class Handler extends ExceptionHandler
                 ->with('_status', $status)->withErrors($exception->getMessage())->withInput();
         }
         return parent::render($request, $exception);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    protected function renderHttpException(HttpException $e): SymfonyResponse
+    {
+        $response = parent::renderHttpException($e);
+        
+        if ($response instanceof Response) {
+            $doc = new DOMDocument();
+            $doc->loadHTML($response->getContent());
+
+            $link = $doc->createElement('link');
+            $link->setAttribute('href', asset('css/illuminate-exceptions.css'));
+            $link->setAttribute('rel', 'stylesheet');
+            $style = $doc->getElementsByTagName('style')->item(0);
+            $style->parentNode->replaceChild($link, $style);
+
+            $favicon = $doc->createElement('link');
+            $favicon->setAttribute('href', asset('favicon.ico'));
+            $favicon->setAttribute('rel', 'icon');
+            $head = $doc->getElementsByTagName('head')->item(0);
+            $head->insertBefore($favicon, $head->firstChild);
+
+            $response->setContent($doc->saveHTML());
+        }
+        
+        return $response;
     }
 }
