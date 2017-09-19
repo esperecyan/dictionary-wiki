@@ -153,7 +153,7 @@ class DictionariesTest extends DuskTestCase
                                         </li>
                                         <li>
                                             紅魔郷四面中ボスは
-                                            <a href="http://dic.pixiv.net/a/%E5%B0%8F%E6%82%AA%E9%AD%94%28%E6%9D%B1%E6%96%B9Project%29">
+                                            <a href="http://dic.pixiv.net/a/%E5%B0%8F%E6%82%AA%E9%AD%94(%E6%9D%B1%E6%96%B9Project)">
                                                 <code>こあくま</code>
                                             </a>
                                         </li>
